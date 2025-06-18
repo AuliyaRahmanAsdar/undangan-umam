@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umam & Misna Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#BDB76B',secondary:'#8B7D39'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.5.0/echarts.min.js"></script>
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        
+        body {
+            font-family: 'Cormorant Garamond', serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+        }
+        
+        .font-playfair {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #1a1a1a;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s ease-in-out;
+        }
+        
+        .lock-screen.slide-up {
+            transform: translateY(-100%);
+        }
+        
+        .slide-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+        
+        .section {
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            z-index: -1;
+        }
+        
+        .bg-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23BDB76B' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.1;
+            z-index: -2;
+        }
+        
+        .divider {
+            width: 100px;
+            height: 2px;
+            background-color: #BDB76B;
+            margin: 1rem auto;
+        }
+        
+        .ornament {
+            font-size: 1.5rem;
+            color: #BDB76B;
+            margin: 0.5rem 0;
+        }
+        
+        .gallery-container {
+            width: 100%;
+            overflow-x: hidden;
+            position: relative;
+        }
+        
+        .gallery {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+        
+        .gallery-item {
+            min-width: 100%;
+            flex-shrink: 0;
+        }
+        
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background-color: #1a1a1a;
+            border: 2px solid #BDB76B;
+            padding: 2rem;
+            z-index: 1000;
+            max-width: 90%;
+            width: 320px;
+            text-align: center;
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        
+        .popup.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 0.5rem;
+        }
+        
+        .countdown-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #BDB76B;
+        }
+        
+        .countdown-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .comment-container {
+            max-height: 300px;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        input[type="text"], textarea {
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid #BDB76B;
+            color: #e0e0e0;
+        }
+        
+        input[type="text"]::placeholder, textarea::placeholder {
+            color: rgba(224, 224, 224, 0.5);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .arabic-text {
+            font-family: 'Scheherazade New', serif;
+            font-size: 1.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            direction: rtl;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="lock-screen" id="lockScreen">
+        <div class="w-24 h-24 mb-6 flex items-center justify-center">
+            <img src="https://readdy.ai/api/search-image?query=elegant%2520wedding%2520rings%2520on%2520dark%2520background%2C%2520minimalist%2520vintage%2520style%2C%2520khaki%2520and%2520gold%2520tones%2C%2520professional%2520product%2520photography%2C%2520dramatic%2520lighting%2C%2520high%2520detail%2C%2520luxury%2520jewelry%2520photography&width=200&height=200&seq=1&orientation=squarish" alt="Wedding Rings" class="w-full h-full object-cover rounded-full border-2 border-primary">
+        </div>
+        <h1 class="text-3xl font-['Pacifico'] text-primary mb-2">Umam & Misna</h1>
+        <p class="text-sm mb-8 text-center">We invite you to celebrate our wedding day</p>
+        <div class="slide-indicator text-center">
+            <p class="text-xs mb-2">Slide up to open</p>
+            <i class="ri-arrow-up-line ri-lg text-primary"></i>
+        </div>
+    </div>
+
+    <main>
+        <section id="intro" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <p class="text-sm text-primary mb-4 fade-in">THE WEDDING OF</p>
+                <h1 class="text-4xl font-['Pacifico'] text-primary mb-2 fade-in" style="transition-delay: 0.2s;">Umam & Misna</h1>
+                <div class="divider fade-in" style="transition-delay: 0.4s;"></div>
+                <p class="text-lg mb-6 fade-in" style="transition-delay: 0.6s;">August 2, 2025</p>
+                <div class="w-64 h-64 mx-auto mb-8 fade-in" style="transition-delay: 0.8s;">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%2520wedding%2520couple%2C%2520vintage%2520style%2520portrait%2C%2520warm%2520khaki%2520tones%2C%2520minimalist%2520composition%2C%2520dark%2520background%2C%2520professional%2520wedding%2520photography%2C%2520soft%2520lighting%2C%2520romantic%2520atmosphere%2C%2520high%2520detail%2C%2520artistic%2520portrait&width=300&height=300&seq=2&orientation=squarish" alt="Umam & Misna" class="w-full h-full object-cover rounded-full border-4 border-primary">
+                </div>
+                <button id="openPopupBtn" class="bg-primary text-black px-6 py-2 rounded-button font-medium hover:bg-opacity-90 transition-all cursor-pointer fade-in" style="transition-delay: 1s;">Open Invitation</button>
+            </div>
+        </section>
+
+        <section id="groom" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">❦</div>
+                <h2 class="text-2xl font-playfair mb-2 fade-in">The Groom</h2>
+                <div class="w-40 h-40 mx-auto mb-4 fade-in">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%2520groom%2520portrait%2C%2520handsome%2520man%2520in%2520formal%2520attire%2C%2520vintage%2520style%2C%2520dark%2520background%2C%2520khaki%2520tones%2C%2520professional%2520wedding%2520photography%2C%2520minimalist%2520composition%2C%2520soft%2520lighting%2C%2520high%2520detail&width=200&height=200&seq=3&orientation=squarish" alt="Ahmad Haerul Umam Baking" class="w-full h-full object-cover rounded-full border-2 border-primary">
+                </div>
+                <h3 class="text-xl font-playfair text-primary mb-2 fade-in">Ahmad Haerul Umam Baking</h3>
+                <p class="text-sm mb-4 fade-in">The first son of</p>
+                <p class="text-lg mb-1 fade-in">Mr. Syahrir Baksit</p>
+                <p class="text-lg mb-6 fade-in">& Mrs. Nadira</p>
+                <div class="divider fade-in"></div>
+            </div>
+        </section>
+
+        <section id="bride" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">❦</div>
+                <h2 class="text-2xl font-playfair mb-2 fade-in">The Bride</h2>
+                <div class="w-40 h-40 mx-auto mb-4 fade-in">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%2520bride%2520portrait%2C%2520beautiful%2520woman%2520in%2520wedding%2520dress%2C%2520vintage%2520style%2C%2520dark%2520background%2C%2520khaki%2520tones%2C%2520professional%2520wedding%2520photography%2C%2520minimalist%2520composition%2C%2520soft%2520lighting%2C%2520high%2520detail&width=200&height=200&seq=4&orientation=squarish" alt="Misna Permata Wulansari" class="w-full h-full object-cover rounded-full border-2 border-primary">
+                </div>
+                <h3 class="text-xl font-playfair text-primary mb-2 fade-in">Misna Permata Wulansari</h3>
+                <p class="text-sm mb-4 fade-in">The beloved daughter of</p>
+                <p class="text-lg mb-1 fade-in">Mr. Wulan Permadi</p>
+                <p class="text-lg mb-6 fade-in">& Mrs. Sari Indah</p>
+                <div class="divider fade-in"></div>
+            </div>
+        </section>
+
+        <section id="quran" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">۞</div>
+                <h2 class="text-2xl font-playfair mb-4 fade-in">Qur'an Verse</h2>
+                <div class="bg-black bg-opacity-30 p-6 rounded-lg border border-primary border-opacity-30 mb-6 fade-in">
+                    <p class="arabic-text mb-6 fade-in">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</p>
+                    <div class="divider mx-auto fade-in"></div>
+                    <p class="text-sm italic fade-in">"And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought."</p>
+                    <p class="text-xs mt-2 fade-in">Surah Ar-Rum [30:21]</p>
+                </div>
+            </div>
+        </section>
+        <section id="countdown" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">❦</div>
+                <h2 class="text-2xl font-playfair mb-2 fade-in">Save The Date</h2>
+                <p class="text-lg mb-6 fade-in">August 2, 2025</p>
+                <div class="flex justify-center mb-8 fade-in">
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="days">00</div>
+                        <div class="countdown-label">Days</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="hours">00</div>
+                        <div class="countdown-label">Hours</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="minutes">00</div>
+                        <div class="countdown-label">Minutes</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="countdown-value" id="seconds">00</div>
+                        <div class="countdown-label">Seconds</div>
+                    </div>
+                </div>
+                <div class="bg-black bg-opacity-30 p-6 rounded-lg border border-primary border-opacity-30 mb-6 fade-in">
+                    <h3 class="text-xl font-playfair text-primary mb-2">Wedding Ceremony</h3>
+                    <p class="mb-1">10:00 AM - 12:00 PM</p>
+                    <p class="mb-4">Grand Ballroom, Luxury Hotel</p>
+                    <h3 class="text-xl font-playfair text-primary mb-2">Wedding Reception</h3>
+                    <p class="mb-1">01:00 PM - 04:00 PM</p>
+                    <p>Garden Pavilion, Luxury Hotel</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">❦</div>
+                <h2 class="text-2xl font-playfair mb-6 fade-in">Our Gallery</h2>
+                <div class="gallery-container fade-in">
+                    <div class="gallery" id="gallery">
+                        <div class="gallery-item">
+                            <img src="https://readdy.ai/api/search-image?query=elegant%2520wedding%2520couple%2520in%2520garden%2C%2520romantic%2520pre-wedding%2520photoshoot%2C%2520vintage%2520style%2C%2520khaki%2520tones%2C%2520professional%2520wedding%2520photography%2C%2520minimalist%2520composition%2C%2520soft%2520lighting%2C%2520high%2520detail&width=375&height=250&seq=5&orientation=landscape" alt="Pre-wedding photo 1" class="w-full h-64 object-cover rounded-lg">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://readdy.ai/api/search-image?query=elegant%2520wedding%2520couple%2520by%2520beach%2520sunset%2C%2520romantic%2520pre-wedding%2520photoshoot%2C%2520vintage%2520style%2C%2520khaki%2520tones%2C%2520professional%2520wedding%2520photography%2C%2520minimalist%2520composition%2C%2520soft%2520lighting%2C%2520high%2520detail&width=375&height=250&seq=6&orientation=landscape" alt="Pre-wedding photo 2" class="w-full h-64 object-cover rounded-lg">
+                        </div>
+                        <div class="gallery-item">
+                            <img src="https://readdy.ai/api/search-image?query=elegant%2520wedding%2520couple%2520in%2520forest%2C%2520romantic%2520pre-wedding%2520photoshoot%2C%2520vintage%2520style%2C%2520khaki%2520tones%2C%2520professional%2520wedding%2520photography%2C%2520minimalist%2520composition%2C%2520soft%2520lighting%2C%2520high%2520detail&width=375&height=250&seq=7&orientation=landscape" alt="Pre-wedding photo 3" class="w-full h-64 object-cover rounded-lg">
+                        </div>
+                    </div>
+                </div>
+                <div class="flex justify-center mt-4 fade-in">
+                    <button id="prevBtn" class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full mr-4 cursor-pointer">
+                        <i class="ri-arrow-left-s-line ri-lg text-primary"></i>
+                    </button>
+                    <button id="nextBtn" class="w-10 h-10 flex items-center justify-center bg-primary bg-opacity-20 rounded-full cursor-pointer">
+                        <i class="ri-arrow-right-s-line ri-lg text-primary"></i>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="gift" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">❦</div>
+                <h2 class="text-2xl font-playfair mb-2 fade-in">Wedding Gift</h2>
+                <p class="text-sm mb-6 fade-in">Your presence is our greatest gift. However, if you wish to honor us with a gift, we have provided the following options:</p>
+                <div class="bg-black bg-opacity-30 p-6 rounded-lg border border-primary border-opacity-30 mb-6 fade-in">
+                    <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary bg-opacity-20 rounded-full">
+                        <i class="ri-bank-card-line ri-2x text-primary"></i>
+                    </div>
+                    <h3 class="text-xl font-playfair text-primary mb-2">Bank Transfer</h3>
+                    <p class="mb-1">Bank: National Bank</p>
+                    <p class="mb-1">Account Number: 1234 5678 9012 3456</p>
+                    <p class="mb-4">Account Name: Ahmad Haerul Umam Baking</p>
+                    <button class="bg-primary text-black px-4 py-1 text-sm rounded-button font-medium hover:bg-opacity-90 transition-all cursor-pointer" id="copyAccountBtn">Copy Account Number</button>
+                </div>
+            </div>
+        </section>
+
+        <section id="location" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">❦</div>
+                <h2 class="text-2xl font-playfair mb-2 fade-in">Wedding Location</h2>
+                <p class="text-sm mb-6 fade-in">Luxury Hotel, 123 Wedding Avenue, Celebration City</p>
+                <div class="w-full h-64 rounded-lg overflow-hidden mb-6 fade-in" style="background-image: url('https://public.readdy.ai/gen_page/map_placeholder_1280x720.png'); background-position: center; background-size: cover;"></div>
+                <a href="https://maps.google.com" target="_blank" class="bg-primary text-black px-6 py-2 rounded-button font-medium hover:bg-opacity-90 transition-all inline-block cursor-pointer fade-in">Open in Google Maps</a>
+            </div>
+        </section>
+
+        <section id="wishes" class="section">
+            <div class="bg-pattern"></div>
+            <div class="container mx-auto text-center">
+                <div class="ornament fade-in">❦</div>
+                <h2 class="text-2xl font-playfair mb-6 fade-in">Send Your Wishes</h2>
+                <form id="wishesForm" class="mb-8 fade-in">
+                    <div class="mb-4">
+                        <input type="text" id="name" placeholder="Your Name" class="w-full px-4 py-2 rounded-button mb-2" required>
+                    </div>
+                    <div class="mb-4">
+                        <textarea id="message" placeholder="Your Message" class="w-full px-4 py-2 rounded-button h-24 resize-none" required></textarea>
+                    </div>
+                    <button type="submit" class="bg-primary text-black px-6 py-2 rounded-button font-medium hover:bg-opacity-90 transition-all cursor-pointer">Send Wishes</button>
+                </form>
+                <h3 class="text-xl font-playfair mb-4 fade-in">Wishes from Friends & Family</h3>
+                <div class="comment-container bg-black bg-opacity-30 p-4 rounded-lg border border-primary border-opacity-30 fade-in" id="commentsContainer">
+                    <div class="comment mb-4 text-left">
+                        <h4 class="text-primary font-medium">Emily Johnson</h4>
+                        <p class="text-sm">Congratulations on your special day! Wishing you a lifetime of love, joy, and happiness together. May your marriage be blessed with endless love and beautiful moments.</p>
+                    </div>
+                    <div class="comment mb-4 text-left">
+                        <h4 class="text-primary font-medium">Michael Thompson</h4>
+                        <p class="text-sm">So happy for both of you! May your love grow stronger with each passing day. Wishing you all the best on this beautiful journey together.</p>
+                    </div>
+                    <div class="comment mb-4 text-left">
+                        <h4 class="text-primary font-medium">Sophia Williams</h4>
+                        <p class="text-sm">Congratulations to the beautiful couple! May your marriage be filled with all the right ingredients: a heap of love, a dash of humor, a touch of romance, and a spoonful of understanding.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="py-8 text-center bg-black bg-opacity-50">
+            <h2 class="text-2xl font-['Pacifico'] text-primary mb-2">Umam & Misna</h2>
+            <p class="text-sm">Thank you for celebrating with us</p>
+            <p class="text-xs mt-4">August 2, 2025</p>
+        </footer>
+    </main>
+
+    <div class="popup" id="welcomePopup">
+        <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center bg-primary bg-opacity-20 rounded-full">
+            <i class="ri-heart-line ri-2x text-primary"></i>
+        </div>
+        <h2 class="text-xl font-playfair text-primary mb-2">Welcome to Our Wedding</h2>
+        <p class="text-sm mb-6">We are delighted to invite you to celebrate the beginning of our new journey together. Your presence on our special day would mean the world to us as we exchange vows and begin our lives as husband and wife.</p>
+        <button id="closePopupBtn" class="bg-primary text-black px-6 py-2 rounded-button font-medium hover:bg-opacity-90 transition-all cursor-pointer">Continue</button>
+    </div>
+
+    <script id="lockScreenScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const lockScreen = document.getElementById('lockScreen');
+            
+            let startY, endY;
+            
+            lockScreen.addEventListener('touchstart', function(e) {
+                startY = e.touches[0].clientY;
+            });
+            
+            lockScreen.addEventListener('touchmove', function(e) {
+                endY = e.touches[0].clientY;
+            });
+            
+            lockScreen.addEventListener('touchend', function() {
+                if (startY && endY && startY - endY > 100) {
+                    lockScreen.classList.add('slide-up');
+                    setTimeout(function() {
+                        lockScreen.style.display = 'none';
+                        animateElements();
+                    }, 1000);
+                }
+                startY = null;
+                endY = null;
+            });
+            
+            // For desktop/mouse users
+            lockScreen.addEventListener('mousedown', function(e) {
+                startY = e.clientY;
+            });
+            
+            lockScreen.addEventListener('mouseup', function(e) {
+                endY = e.clientY;
+                if (startY && endY && startY - endY > 100) {
+                    lockScreen.classList.add('slide-up');
+                    setTimeout(function() {
+                        lockScreen.style.display = 'none';
+                        animateElements();
+                    }, 1000);
+                }
+                startY = null;
+                endY = null;
+            });
+        });
+    </script>
+
+    <script id="animationScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initial animation if lock screen is bypassed
+            if (document.getElementById('lockScreen').style.display === 'none') {
+                animateElements();
+            }
+            
+            // Scroll animation
+            window.addEventListener('scroll', animateElements);
+        });
+        
+        function animateElements() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const elementBottom = element.getBoundingClientRect().bottom;
+                
+                // Check if element is in viewport
+                if (elementTop < window.innerHeight - 50 && elementBottom > 0) {
+                    element.classList.add('visible');
+                }
+            });
+        }
+    </script>
+
+    <script id="popupScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const openPopupBtn = document.getElementById('openPopupBtn');
+            const closePopupBtn = document.getElementById('closePopupBtn');
+            const welcomePopup = document.getElementById('welcomePopup');
+            
+            openPopupBtn.addEventListener('click', function() {
+                welcomePopup.classList.add('show');
+            });
+            
+            closePopupBtn.addEventListener('click', function() {
+                welcomePopup.classList.remove('show');
+            });
+        });
+    </script>
+
+    <script id="countdownScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const daysElement = document.getElementById('days');
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            const secondsElement = document.getElementById('seconds');
+            
+            const weddingDate = new Date('August 2, 2025 10:00:00').getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+                
+                if (distance < 0) {
+                    daysElement.textContent = '00';
+                    hoursElement.textContent = '00';
+                    minutesElement.textContent = '00';
+                    secondsElement.textContent = '00';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                daysElement.textContent = days.toString().padStart(2, '0');
+                hoursElement.textContent = hours.toString().padStart(2, '0');
+                minutesElement.textContent = minutes.toString().padStart(2, '0');
+                secondsElement.textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        });
+    </script>
+
+    <script id="galleryScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const gallery = document.getElementById('gallery');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            
+            let currentIndex = 0;
+            const itemWidth = 100; // percentage
+            
+            function updateGallery() {
+                gallery.style.transform = `translateX(-${currentIndex * itemWidth}%)`;
+            }
+            
+            prevBtn.addEventListener('click', function() {
+                if (currentIndex > 0) {
+                    currentIndex--;
+                    updateGallery();
+                }
+            });
+            
+            nextBtn.addEventListener('click', function() {
+                if (currentIndex < galleryItems.length - 1) {
+                    currentIndex++;
+                    updateGallery();
+                }
+            });
+            
+            // Touch events for swiping
+            let startX, endX;
+            
+            gallery.addEventListener('touchstart', function(e) {
+                startX = e.touches[0].clientX;
+            });
+            
+            gallery.addEventListener('touchmove', function(e) {
+                endX = e.touches[0].clientX;
+            });
+            
+            gallery.addEventListener('touchend', function() {
+                if (startX && endX) {
+                    const diff = startX - endX;
+                    
+                    if (diff > 50 && currentIndex < galleryItems.length - 1) {
+                        // Swipe left
+                        currentIndex++;
+                        updateGallery();
+                    } else if (diff < -50 && currentIndex > 0) {
+                        // Swipe right
+                        currentIndex--;
+                        updateGallery();
+                    }
+                }
+                
+                startX = null;
+                endX = null;
+            });
+        });
+    </script>
+    <script id="wishesScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const wishesForm = document.getElementById('wishesForm');
+            const commentsContainer = document.getElementById('commentsContainer');
+            
+            wishesForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const message = document.getElementById('message').value;
+                
+                if (name && message) {
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = 'comment mb-4 text-left';
+                    
+                    const nameHeading = document.createElement('h4');
+                    nameHeading.className = 'text-primary font-medium';
+                    nameHeading.textContent = name;
+                    
+                    const messageP = document.createElement('p');
+                    messageP.className = 'text-sm';
+                    messageP.textContent = message;
+                    
+                    commentDiv.appendChild(nameHeading);
+                    commentDiv.appendChild(messageP);
+                    
+                    commentsContainer.prepend(commentDiv);
+                    
+                    // Clear form
+                    wishesForm.reset();
+                }
+            });
+        });
+    </script>
+
+    <script id="copyAccountScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyAccountBtn = document.getElementById('copyAccountBtn');
+            
+            copyAccountBtn.addEventListener('click', function() {
+                const accountNumber = '1234 5678 9012 3456';
+                
+                navigator.clipboard.writeText(accountNumber).then(function() {
+                    const originalText = copyAccountBtn.textContent;
+                    copyAccountBtn.textContent = 'Copied!';
+                    
+                    setTimeout(function() {
+                        copyAccountBtn.textContent = originalText;
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html>

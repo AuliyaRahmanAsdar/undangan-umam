@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umam & Misna Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#BDB76B',secondary:'#4A4A4A'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+        
+        .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .lockscreen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 100;
+            background-color: #121212;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: transform 1s ease-in-out;
+        }
+        
+        .lockscreen.unlocked {
+            transform: translateY(-100%);
+        }
+        
+        .swipe-indicator {
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-50%) translateY(-20px);
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateX(-50%) translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .section {
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .ornament {
+            position: absolute;
+            opacity: 0.1;
+        }
+        
+        .ornament-top-left {
+            top: 20px;
+            left: 20px;
+        }
+        
+        .ornament-bottom-right {
+            bottom: 20px;
+            right: 20px;
+        }
+        
+        .gallery-container {
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        
+        .gallery-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .gallery {
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+        }
+        
+        .gallery-item {
+            flex: 0 0 auto;
+            width: 280px;
+            height: 350px;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .comment-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .divider {
+            position: relative;
+            height: 1px;
+            width: 100%;
+            max-width: 200px;
+            background-color: rgba(189, 183, 107, 0.3);
+            margin: 2rem 0;
+        }
+        
+        .divider::before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #BDB76B;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        
+        .arabic-text {
+            font-family: 'Scheherazade New', serif;
+            font-size: 1.5rem;
+            line-height: 2.5rem;
+            text-align: center;
+            direction: rtl;
+        }
+        
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 50;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(189, 183, 107, 0.2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .music-control:hover {
+            background-color: rgba(189, 183, 107, 0.4);
+        }
+        
+        .copy-btn {
+            position: relative;
+        }
+        
+        .copy-tooltip {
+            position: absolute;
+            top: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(0,0,0,0.8);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .copy-btn:hover .copy-tooltip {
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Lock Screen -->
+    <div class="lockscreen" id="lockscreen">
+        <div class="text-center mb-8 fade-in visible">
+            <p class="text-primary text-sm mb-2">THE WEDDING OF</p>
+            <h1 class="font-['Pacifico'] text-4xl text-primary mb-4">Umam & Misna</h1>
+            <p class="text-sm text-gray-300">Dear,</p>
+            <p class="text-xl font-serif mt-2">You are cordially invited</p>
+        </div>
+        <div class="swipe-indicator">
+            <i class="ri-arrow-up-line text-primary ri-xl"></i>
+        </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control" id="musicControl">
+        <i class="ri-volume-up-line text-primary"></i>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="section bg-black" id="hero">
+        <div class="ornament ornament-top-left">
+            <i class="ri-flower-line ri-3x text-primary"></i>
+        </div>
+        
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">WE ARE GETTING MARRIED</p>
+            <h1 class="font-['Pacifico'] text-4xl text-primary mb-4">Umam & Misna</h1>
+            <p class="text-sm text-gray-300">June 25, 2025</p>
+        </div>
+        
+        <div class="relative w-full max-w-xs h-80 rounded-lg overflow-hidden mb-8 fade-in">
+            <img src="https://readdy.ai/api/search-image?query=elegant%20wedding%20couple%20portrait%2C%20Muslim%20couple%20in%20formal%20wedding%20attire%2C%20groom%20in%20black%20suit%2C%20bride%20in%20white%20dress%20with%20hijab%2C%20professional%20photography%2C%20soft%20lighting%2C%20romantic%20pose%2C%20dark%20background%20with%20subtle%20gold%20accents%2C%20high-end%20fashion%20photography%20style&width=400&height=600&seq=1&orientation=portrait" alt="Umam & Misna" class="w-full h-full object-cover object-top">
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+        </div>
+        
+        <div class="fade-in text-center max-w-md">
+            <p class="font-serif text-lg italic text-gray-300">
+                "Two souls with but a single thought, two hearts that beat as one."
+            </p>
+            <div class="divider mx-auto"></div>
+            <p class="text-sm text-gray-400">
+                We invite you to share in our joy and celebrate this blessed union as we begin our new journey together in faith and love.
+            </p>
+        </div>
+        
+        <div class="ornament ornament-bottom-right">
+            <i class="ri-flower-line ri-3x text-primary"></i>
+        </div>
+    </section>
+
+    <!-- Groom Section -->
+    <section class="section" id="groom">
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">THE GROOM</p>
+            <h2 class="font-serif text-3xl mb-6">Ahmad Haerul Umam Baking</h2>
+        </div>
+        
+        <div class="relative w-full max-w-xs h-80 rounded-lg overflow-hidden mb-8 fade-in">
+            <img src="https://readdy.ai/api/search-image?query=elegant%20portrait%20of%20handsome%20Muslim%20groom%20in%20formal%20black%20suit%2C%20professional%20photography%2C%20soft%20lighting%2C%20serious%20expression%2C%20dark%20background%20with%20subtle%20gold%20accents%2C%20high-end%20fashion%20photography%20style&width=400&height=600&seq=2&orientation=portrait" alt="Ahmad Haerul Umam Baking" class="w-full h-full object-cover object-top">
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+        </div>
+        
+        <div class="fade-in text-center max-w-md">
+            <p class="text-sm text-gray-300 mb-4">
+                The first son of
+            </p>
+            <p class="font-serif text-xl mb-1">Mr. Syahrir Baksit</p>
+            <p class="text-sm text-gray-400 mb-4">&</p>
+            <p class="font-serif text-xl">Mrs. Nadira</p>
+        </div>
+    </section>
+
+    <!-- Bride Section -->
+    <section class="section" id="bride">
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">THE BRIDE</p>
+            <h2 class="font-serif text-3xl mb-6">Misna Permata Wulansari</h2>
+        </div>
+        
+        <div class="relative w-full max-w-xs h-80 rounded-lg overflow-hidden mb-8 fade-in">
+            <img src="https://readdy.ai/api/search-image?query=elegant%20portrait%20of%20beautiful%20Muslim%20bride%20in%20white%20wedding%20dress%20with%20hijab%2C%20professional%20photography%2C%20soft%20lighting%2C%20gentle%20smile%2C%20dark%20background%20with%20subtle%20gold%20accents%2C%20high-end%20fashion%20photography%20style&width=400&height=600&seq=3&orientation=portrait" alt="Misna Permata Wulansari" class="w-full h-full object-cover object-top">
+            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+        </div>
+        
+        <div class="fade-in text-center max-w-md">
+            <p class="text-sm text-gray-300 mb-4">
+                The beloved daughter of
+            </p>
+            <p class="font-serif text-xl mb-1">Mr. Wulan Permadi</p>
+            <p class="text-sm text-gray-400 mb-4">&</p>
+            <p class="font-serif text-xl">Mrs. Sari Indah</p>
+        </div>
+    </section>
+
+    <!-- Quran Verse Section -->
+    <section class="section" id="quranVerse">
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">QURAN VERSE</p>
+            <h2 class="font-serif text-2xl mb-6">Surah Ar-Rum, Verse 21</h2>
+        </div>
+        
+        <div class="fade-in text-center max-w-md mb-8">
+            <p class="arabic-text mb-6">
+                وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
+            </p>
+            
+            <div class="divider mx-auto"></div>
+            
+            <p class="text-sm text-gray-300 italic">
+                "And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought."
+            </p>
+        </div>
+    </section>
+
+    <!-- Countdown Section -->
+    <section class="section" id="countdown">
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">SAVE THE DATE</p>
+            <h2 class="font-serif text-3xl mb-2">June 25, 2025</h2>
+            <p class="text-sm text-gray-400">Grand Ballroom, Emerald Hotel</p>
+            <p class="text-sm text-gray-400">Jakarta, Indonesia</p>
+        </div>
+        
+        <div class="fade-in flex justify-center gap-4 mb-8" id="countdownContainer">
+            <div class="w-16 h-20 bg-black bg-opacity-50 border border-primary rounded-lg flex flex-col items-center justify-center">
+                <span id="days" class="text-2xl font-bold text-primary">00</span>
+                <span class="text-xs text-gray-400">Days</span>
+            </div>
+            <div class="w-16 h-20 bg-black bg-opacity-50 border border-primary rounded-lg flex flex-col items-center justify-center">
+                <span id="hours" class="text-2xl font-bold text-primary">00</span>
+                <span class="text-xs text-gray-400">Hours</span>
+            </div>
+            <div class="w-16 h-20 bg-black bg-opacity-50 border border-primary rounded-lg flex flex-col items-center justify-center">
+                <span id="minutes" class="text-2xl font-bold text-primary">00</span>
+                <span class="text-xs text-gray-400">Minutes</span>
+            </div>
+            <div class="w-16 h-20 bg-black bg-opacity-50 border border-primary rounded-lg flex flex-col items-center justify-center">
+                <span id="seconds" class="text-2xl font-bold text-primary">00</span>
+                <span class="text-xs text-gray-400">Seconds</span>
+            </div>
+        </div>
+        
+        <div class="fade-in text-center">
+            <a href="#" class="inline-block px-6 py-3 bg-primary text-black font-medium rounded-button transition-all hover:bg-opacity-90 cursor-pointer">
+                <i class="ri-calendar-line mr-2"></i> Add to Calendar
+            </a>
+        </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section class="section" id="gallery">
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">OUR MOMENTS</p>
+            <h2 class="font-serif text-3xl mb-6">Gallery</h2>
+        </div>
+        
+        <div class="fade-in gallery-container">
+            <div class="gallery">
+                <div class="gallery-item">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%20Muslim%20pre-wedding%20photoshoot%2C%20couple%20walking%20in%20garden%2C%20romantic%20atmosphere%2C%20professional%20photography%2C%20soft%20lighting%2C%20dark%20background%20with%20subtle%20gold%20accents%2C%20high-end%20fashion%20photography%20style&width=280&height=350&seq=4&orientation=portrait" alt="Pre-wedding photo 1" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%20Muslim%20pre-wedding%20photoshoot%2C%20couple%20sitting%20on%20bench%2C%20romantic%20atmosphere%2C%20professional%20photography%2C%20soft%20lighting%2C%20dark%20background%20with%20subtle%20gold%20accents%2C%20high-end%20fashion%20photography%20style&width=280&height=350&seq=5&orientation=portrait" alt="Pre-wedding photo 2" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%20Muslim%20pre-wedding%20photoshoot%2C%20couple%20holding%20hands%2C%20romantic%20atmosphere%2C%20professional%20photography%2C%20soft%20lighting%2C%20dark%20background%20with%20subtle%20gold%20accents%2C%20high-end%20fashion%20photography%20style&width=280&height=350&seq=6&orientation=portrait" alt="Pre-wedding photo 3" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%20Muslim%20pre-wedding%20photoshoot%2C%20couple%20looking%20at%20each%20other%2C%20romantic%20atmosphere%2C%20professional%20photography%2C%20soft%20lighting%2C%20dark%20background%20with%20subtle%20gold%20accents%2C%20high-end%20fashion%20photography%20style&width=280&height=350&seq=7&orientation=portrait" alt="Pre-wedding photo 4" class="w-full h-full object-cover object-top">
+                </div>
+            </div>
+        </div>
+        
+        <div class="fade-in mt-4 text-center">
+            <p class="text-xs text-gray-400">Swipe to see more photos</p>
+        </div>
+    </section>
+
+    <!-- Gift Section -->
+    <section class="section" id="gift">
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">WEDDING GIFT</p>
+            <h2 class="font-serif text-3xl mb-6">Send a Gift</h2>
+        </div>
+        
+        <div class="fade-in max-w-md w-full bg-black bg-opacity-50 border border-primary rounded-lg p-6 mb-8">
+            <div class="text-center mb-6">
+                <i class="ri-gift-line ri-3x text-primary mb-4"></i>
+                <p class="text-sm text-gray-300 mb-2">
+                    Your presence is our greatest gift. However, if you wish to honor us with a gift, we have provided our account details below:
+                </p>
+            </div>
+            
+            <div class="mb-6">
+                <p class="text-xs text-gray-400 mb-1">Bank Account</p>
+                <p class="font-medium mb-1">Bank Central Asia (BCA)</p>
+                <div class="flex items-center justify-between bg-gray-900 rounded p-2">
+                    <span class="font-mono">8241-5692-3017</span>
+                    <button class="copy-btn p-1 rounded-full hover:bg-gray-800 cursor-pointer" data-copy="8241-5692-3017">
+                        <i class="ri-file-copy-line text-primary"></i>
+                        <span class="copy-tooltip">Copy</span>
+                    </button>
+                </div>
+                <p class="text-sm mt-1">Ahmad Haerul Umam Baking</p>
+            </div>
+            
+            <div>
+                <p class="text-xs text-gray-400 mb-1">Digital Wallet</p>
+                <p class="font-medium mb-1">GoPay</p>
+                <div class="flex items-center justify-between bg-gray-900 rounded p-2">
+                    <span class="font-mono">+62 812-3456-7890</span>
+                    <button class="copy-btn p-1 rounded-full hover:bg-gray-800 cursor-pointer" data-copy="+62 812-3456-7890">
+                        <i class="ri-file-copy-line text-primary"></i>
+                        <span class="copy-tooltip">Copy</span>
+                    </button>
+                </div>
+                <p class="text-sm mt-1">Ahmad Haerul Umam Baking</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Comments Section -->
+    <section class="section" id="comments">
+        <div class="fade-in text-center mb-8">
+            <p class="text-xs text-primary tracking-widest uppercase mb-2">SEND YOUR WISHES</p>
+            <h2 class="font-serif text-3xl mb-6">Prayers & Wishes</h2>
+        </div>
+        
+        <div class="fade-in max-w-md w-full">
+            <form id="commentForm" class="mb-8">
+                <div class="mb-4">
+                    <label for="name" class="block text-xs text-gray-400 mb-1">Your Name</label>
+                    <input type="text" id="name" class="w-full bg-black bg-opacity-50 border border-gray-700 rounded-button p-3 text-white focus:border-primary focus:outline-none" required>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="message" class="block text-xs text-gray-400 mb-1">Your Message</label>
+                    <textarea id="message" rows="4" class="w-full bg-black bg-opacity-50 border border-gray-700 rounded-button p-3 text-white focus:border-primary focus:outline-none" required></textarea>
+                </div>
+                
+                <button type="submit" class="w-full px-6 py-3 bg-primary text-black font-medium rounded-button transition-all hover:bg-opacity-90 cursor-pointer">
+                    Send Wishes
+                </button>
+            </form>
+            
+            <div class="divider mx-auto"></div>
+            
+            <div class="comment-list" id="commentList">
+                <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-medium">Emily Johnson</h4>
+                        <span class="text-xs text-gray-400">June 15, 2025</span>
+                    </div>
+                    <p class="text-sm text-gray-300">
+                        Congratulations on your wedding! May Allah bless your union and grant you a lifetime of happiness together. Wishing you both all the best on this beautiful journey.
+                    </p>
+                </div>
+                
+                <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4 mb-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-medium">Michael Rahman</h4>
+                        <span class="text-xs text-gray-400">June 14, 2025</span>
+                    </div>
+                    <p class="text-sm text-gray-300">
+                        May your marriage be filled with all the right ingredients: a heap of love, a dash of humor, a touch of romance, and a spoonful of understanding. May your joy last forever. Congratulations!
+                    </p>
+                </div>
+                
+                <div class="bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4">
+                    <div class="flex justify-between items-start mb-2">
+                        <h4 class="font-medium">Sophia Ahmed</h4>
+                        <span class="text-xs text-gray-400">June 12, 2025</span>
+                    </div>
+                    <p class="text-sm text-gray-300">
+                        Wishing you a lifetime of love and happiness. May the years ahead be filled with lasting joy. Congratulations on your wedding!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="py-8 text-center text-xs text-gray-500">
+        <p>Umam & Misna Wedding</p>
+        <p>June 25, 2025</p>
+    </footer>
+
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+        <source src="audio/music.mp3" type="audio/mpeg">
+    </audio>
+
+    <script id="lockscreenScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const lockscreen = document.getElementById('lockscreen');
+            
+            lockscreen.addEventListener('click', function() {
+                lockscreen.classList.add('unlocked');
+                
+                // Start background music after user interaction
+                const bgMusic = document.getElementById('bgMusic');
+                bgMusic.volume = 0.3;
+                bgMusic.play().catch(e => console.log('Audio play failed:', e));
+            });
+            
+            lockscreen.addEventListener('touchstart', function() {
+                lockscreen.classList.add('unlocked');
+                
+                // Start background music after user interaction
+                const bgMusic = document.getElementById('bgMusic');
+                bgMusic.volume = 0.3;
+                bgMusic.play().catch(e => console.log('Audio play failed:', e));
+            });
+        });
+    </script>
+
+    <script id="fadeInScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+
+    <script id="countdownScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set the wedding date - June 25, 2025
+            const weddingDate = new Date('June 25, 2025 10:00:00').getTime();
+            
+            // Update the countdown every second
+            const countdownTimer = setInterval(function() {
+                // Get today's date and time
+                const now = new Date().getTime();
+                
+                // Find the distance between now and the wedding date
+                const distance = weddingDate - now;
+                
+                // Time calculations for days, hours, minutes and seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Display the result
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                
+                // If the countdown is over, display a message
+                if (distance < 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById('countdownContainer').innerHTML = "<p class='text-xl text-primary'>The Wedding Day Has Arrived!</p>";
+                }
+            }, 1000);
+        });
+    </script>
+
+    <script id="musicControlScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const musicControl = document.getElementById('musicControl');
+            const bgMusic = document.getElementById('bgMusic');
+            let isPlaying = false;
+            
+            musicControl.addEventListener('click', function() {
+                if (isPlaying) {
+                    bgMusic.pause();
+                    musicControl.innerHTML = '<i class="ri-volume-mute-line text-primary"></i>';
+                } else {
+                    bgMusic.play().catch(e => console.log('Audio play failed:', e));
+                    musicControl.innerHTML = '<i class="ri-volume-up-line text-primary"></i>';
+                }
+                
+                isPlaying = !isPlaying;
+            });
+        });
+    </script>
+
+    <script id="commentFormScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const commentForm = document.getElementById('commentForm');
+            const commentList = document.getElementById('commentList');
+            
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const nameInput = document.getElementById('name');
+                const messageInput = document.getElementById('message');
+                
+                if (nameInput.value.trim() === '' || messageInput.value.trim() === '') {
+                    return;
+                }
+                
+                // Create new comment element
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'bg-black bg-opacity-50 border border-gray-800 rounded-lg p-4 mb-4';
+                
+                const headerDiv = document.createElement('div');
+                headerDiv.className = 'flex justify-between items-start mb-2';
+                
+                const nameHeading = document.createElement('h4');
+                nameHeading.className = 'font-medium';
+                nameHeading.textContent = nameInput.value;
+                
+                const dateSpan = document.createElement('span');
+                dateSpan.className = 'text-xs text-gray-400';
+                const currentDate = new Date();
+                dateSpan.textContent = currentDate.toLocaleDateString('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric' 
+                });
+                
+                const messagePara = document.createElement('p');
+                messagePara.className = 'text-sm text-gray-300';
+                messagePara.textContent = messageInput.value;
+                
+                headerDiv.appendChild(nameHeading);
+                headerDiv.appendChild(dateSpan);
+                
+                commentDiv.appendChild(headerDiv);
+                commentDiv.appendChild(messagePara);
+                
+                // Add new comment to the top of the list
+                commentList.insertBefore(commentDiv, commentList.firstChild);
+                
+                // Reset form
+                commentForm.reset();
+            });
+        });
+    </script>
+
+    <script id="copyButtonScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const textToCopy = this.getAttribute('data-copy');
+                    const tooltip = this.querySelector('.copy-tooltip');
+                    
+                    // Copy text to clipboard
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        // Change tooltip text
+                        tooltip.textContent = 'Copied!';
+                        
+                        // Reset tooltip text after 2 seconds
+                        setTimeout(() => {
+                            tooltip.textContent = 'Copy';
+                        }, 2000);
+                    }).catch(err => {
+                        console.error('Failed to copy text: ', err);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html>

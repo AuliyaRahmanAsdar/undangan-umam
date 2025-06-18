@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Umam & Misna Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: "#d4b08c", secondary: "#f5f0e8" },
+            borderRadius: {
+              none: "0px",
+              sm: "4px",
+              DEFAULT: "8px",
+              md: "12px",
+              lg: "16px",
+              xl: "20px",
+              "2xl": "24px",
+              "3xl": "32px",
+              full: "9999px",
+              button: "8px",
+            },
+          },
+        },
+      };
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Montserrat:wght@100;200;300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css"
+    />
+    <style>
+      :where([class^="ri-"])::before { content: "\f3c2"; }
+
+      body {
+          font-family: 'Montserrat', sans-serif;
+          overflow-x: hidden;
+          background-color: #fff;
+      }
+
+      .font-serif {
+          font-family: 'Cormorant Garamond', serif;
+      }
+
+      .lock-screen {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: #f5f0e8;
+          z-index: 9999;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: transform 1s ease-in-out;
+      }
+
+      .lock-screen.unlocked {
+          transform: translateY(-100%);
+      }
+
+      .swipe-indicator {
+          position: absolute;
+          bottom: 50px;
+          left: 50%;
+          transform: translateX(-50%);
+          animation: swipeUp 2s infinite;
+      }
+
+      @keyframes swipeUp {
+          0%, 100% { transform: translate(-50%, 0); opacity: 0.5; }
+          50% { transform: translate(-50%, -20px); opacity: 1; }
+      }
+
+      .section {
+          min-height: 100vh;
+          padding: 2rem 1.5rem;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          position: relative;
+      }
+
+      .fade-in {
+          opacity: 0;
+          transform: translateY(20px);
+          transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .fade-in.visible {
+          opacity: 1;
+          transform: translateY(0);
+      }
+
+      .gallery-container {
+          width: 100%;
+          overflow-x: hidden;
+          position: relative;
+      }
+
+      .gallery {
+          display: flex;
+          transition: transform 0.5s ease;
+      }
+
+      .gallery-item {
+          min-width: 100%;
+          height: 300px;
+          object-fit: cover;
+      }
+
+      .gallery-nav {
+          position: absolute;
+          bottom: 10px;
+          left: 0;
+          right: 0;
+          display: flex;
+          justify-content: center;
+          gap: 8px;
+      }
+
+      .gallery-dot {
+          width: 8px;
+          height: 8px;
+          border-radius: 50%;
+          background-color: rgba(212, 176, 140, 0.5);
+          cursor: pointer;
+      }
+
+      .gallery-dot.active {
+          background-color: #d4b08c;
+      }
+
+      .countdown-item {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          margin: 0 10px;
+      }
+
+      .arabic-text {
+          font-family: 'Scheherazade New', serif;
+          direction: rtl;
+          line-height: 2;
+          font-size: 1.5rem;
+      }
+
+      .modal {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: rgba(0, 0, 0, 0.5);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 1000;
+          opacity: 0;
+          visibility: hidden;
+          transition: opacity 0.3s ease, visibility 0.3s ease;
+      }
+
+      .modal.show {
+          opacity: 1;
+          visibility: visible;
+      }
+
+      .modal-content {
+          background-color: white;
+          padding: 2rem;
+          border-radius: 8px;
+          max-width: 90%;
+          max-height: 80%;
+          overflow-y: auto;
+          transform: translateY(20px);
+          transition: transform 0.3s ease;
+      }
+
+      .modal.show .modal-content {
+          transform: translateY(0);
+      }
+
+      .music-control {
+          position: fixed;
+          bottom: 20px;
+          right: 20px;
+          z-index: 100;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: #d4b08c;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+          cursor: pointer;
+      }
+
+      .divider {
+          position: relative;
+          height: 1px;
+          width: 100%;
+          background-color: rgba(212, 176, 140, 0.3);
+          margin: 2rem 0;
+      }
+
+      .divider::before {
+          content: "";
+          position: absolute;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          width: 10px;
+          height: 10px;
+          background-color: #d4b08c;
+          border-radius: 50%;
+      }
+
+      .comment-box {
+          max-height: 300px;
+          overflow-y: auto;
+      }
+
+      .comment-item {
+          padding: 1rem;
+          border-radius: 8px;
+          background-color: #f9f5f0;
+          margin-bottom: 1rem;
+      }
+    </style>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Scheherazade+New:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Lock Screen -->
+    <div class="lock-screen" id="lockScreen">
+      <div class="text-center mb-8">
+        <p class="text-sm text-gray-600 mb-2">Wedding Invitation For</p>
+        <h2 class="text-2xl font-bold text-gray-800" id="guestName">
+          Dear Guest
+        </h2>
+      </div>
+
+      <div class="text-center">
+        <p class="text-sm text-gray-600 mb-2">
+          You Are Invited To The Wedding Of
+        </p>
+        <h1 class="font-['Pacifico'] text-4xl text-primary mb-2">
+          Umam & Misna
+        </h1>
+        <p class="text-sm text-gray-600">June 25, 2025</p>
+      </div>
+
+      <div class="swipe-indicator">
+        <p class="text-xs text-gray-500 mb-2">Swipe up to open</p>
+        <i class="ri-arrow-up-line ri-lg text-primary"></i>
+      </div>
+    </div>
+
+    <!-- Music Control -->
+    <div class="music-control cursor-pointer" id="musicControl">
+      <i class="ri-volume-up-line text-white" id="musicIcon"></i>
+    </div>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Intro Section -->
+      <section class="section bg-secondary">
+        <div class="text-center fade-in">
+          <p class="text-sm text-gray-600 mb-4">We Are Getting Married</p>
+          <div class="w-48 h-48 mx-auto mb-6 rounded-full overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=elegant%20wedding%20couple%20portrait%2C%20romantic%2C%20soft%20lighting%2C%20minimalist%20style%2C%20close%20up%2C%20gentle%20smiles%2C%20warm%20tones%2C%20professional%20photography%2C%20high%20quality%2C%20centered%20composition&width=400&height=400&seq=1&orientation=squarish"
+              alt="Umam & Misna"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h1 class="font-['Pacifico'] text-4xl text-primary mb-2">
+            Umam & Misna
+          </h1>
+          <p class="text-sm text-gray-600">June 25, 2025</p>
+          <button
+            id="openInvitation"
+            class="mt-8 bg-primary text-white py-2 px-6 rounded-button hover:bg-opacity-90 transition duration-300"
+          >
+            Open Invitation
+          </button>
+        </div>
+      </section>
+
+      <!-- Groom Bio Section -->
+      <section class="section bg-white">
+        <div class="max-w-md mx-auto text-center fade-in">
+          <h2 class="font-serif text-3xl text-gray-800 mb-6">The Groom</h2>
+          <div class="w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=elegant%20portrait%20of%20a%20handsome%20groom%2C%20Middle%20Eastern%20appearance%2C%20formal%20attire%2C%20soft%20lighting%2C%20minimalist%20style%2C%20professional%20photography%2C%20high%20quality%2C%20centered%20composition%2C%20neutral%20background&width=300&height=300&seq=2&orientation=squarish"
+              alt="Ahmad Haerul Umam Baking"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h3 class="font-serif text-2xl text-primary mb-2">
+            Ahmad Haerul Umam Baking
+          </h3>
+          <p class="text-gray-600 mb-4">The first son of</p>
+          <p class="text-gray-800 font-medium mb-1">Mr. Syahrir Baksit</p>
+          <p class="text-gray-800 font-medium">&</p>
+          <p class="text-gray-800 font-medium">Mrs. Nadira</p>
+        </div>
+      </section>
+
+      <!-- Bride Bio Section -->
+      <section class="section bg-secondary">
+        <div class="max-w-md mx-auto text-center fade-in">
+          <h2 class="font-serif text-3xl text-gray-800 mb-6">The Bride</h2>
+          <div class="w-40 h-40 mx-auto mb-6 rounded-full overflow-hidden">
+            <img
+              src="https://readdy.ai/api/search-image?query=elegant%20portrait%20of%20a%20beautiful%20bride%2C%20Indonesian%20appearance%2C%20wedding%20dress%2C%20soft%20lighting%2C%20minimalist%20style%2C%20professional%20photography%2C%20high%20quality%2C%20centered%20composition%2C%20neutral%20background&width=300&height=300&seq=3&orientation=squarish"
+              alt="Misna Permata Wulansari"
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <h3 class="font-serif text-2xl text-primary mb-2">
+            Misna Permata Wulansari
+          </h3>
+          <p class="text-gray-600 mb-4">The beloved daughter of</p>
+          <p class="text-gray-800 font-medium mb-1">Mr. Wulan Darmawan</p>
+          <p class="text-gray-800 font-medium">&</p>
+          <p class="text-gray-800 font-medium">Mrs. Sari Permata</p>
+        </div>
+      </section>
+
+      <!-- Quran Verse Section -->
+      <section class="section bg-white">
+        <div class="max-w-md mx-auto text-center fade-in">
+          <h2 class="font-serif text-3xl text-gray-800 mb-6">Quranic Verse</h2>
+          <div class="mb-6">
+            <p class="arabic-text mb-6">
+              وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُمْ مِنْ أَنْفُسِكُمْ أَزْوَاجًا
+              لِتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُمْ مَوَدَّةً وَرَحْمَةً ۚ
+              إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِقَوْمٍ يَتَفَكَّرُونَ
+            </p>
+            <p class="text-gray-600 italic">
+              "And of His signs is that He created for you from yourselves mates
+              that you may find tranquility in them; and He placed between you
+              affection and mercy. Indeed in that are signs for a people who
+              give thought."
+            </p>
+            <p class="text-gray-800 mt-2">Surah Ar-Rum, Verse 21</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Countdown Section -->
+      <section class="section bg-secondary">
+        <div class="max-w-md mx-auto text-center fade-in">
+          <h2 class="font-serif text-3xl text-gray-800 mb-6">
+            Counting Down To
+          </h2>
+          <div class="flex justify-center mb-8">
+            <div class="countdown-item">
+              <div class="text-3xl font-bold text-primary" id="days">00</div>
+              <div class="text-xs text-gray-600">Days</div>
+            </div>
+            <div class="countdown-item">
+              <div class="text-3xl font-bold text-primary" id="hours">00</div>
+              <div class="text-xs text-gray-600">Hours</div>
+            </div>
+            <div class="countdown-item">
+              <div class="text-3xl font-bold text-primary" id="minutes">00</div>
+              <div class="text-xs text-gray-600">Minutes</div>
+            </div>
+            <div class="countdown-item">
+              <div class="text-3xl font-bold text-primary" id="seconds">00</div>
+              <div class="text-xs text-gray-600">Seconds</div>
+            </div>
+          </div>
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="font-serif text-2xl text-gray-800 mb-4">
+              Wedding Ceremony
+            </h3>
+            <p class="text-gray-600 mb-2">Wednesday, June 25, 2025</p>
+            <p class="text-gray-600 mb-4">10:00 AM - 2:00 PM</p>
+            <div class="divider"></div>
+            <h4 class="font-medium text-gray-800 mb-2">Venue</h4>
+            <p class="text-gray-600 mb-4">
+              Grand Ballroom, Harmony Garden Resort<br />Jl. Pantai Indah No.
+              123, Jakarta
+            </p>
+            <a
+              href="https://maps.google.com"
+              target="_blank"
+              class="inline-block bg-primary text-white py-2 px-6 rounded-button hover:bg-opacity-90 transition duration-300"
+              >View Location</a
+            >
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section class="section bg-white">
+        <div class="max-w-md mx-auto text-center fade-in">
+          <h2 class="font-serif text-3xl text-gray-800 mb-6">Our Moments</h2>
+          <div class="gallery-container mb-6">
+            <div class="gallery" id="gallery">
+              <img
+                src="https://readdy.ai/api/search-image?query=elegant%20pre-wedding%20photoshoot%2C%20romantic%20couple%20in%20garden%2C%20soft%20lighting%2C%20minimalist%20composition%2C%20professional%20photography%2C%20high%20quality%2C%20warm%20tones%2C%20gentle%20poses&width=400&height=300&seq=4&orientation=landscape"
+                alt="Pre-wedding 1"
+                class="gallery-item"
+              />
+              <img
+                src="https://readdy.ai/api/search-image?query=elegant%20pre-wedding%20photoshoot%2C%20romantic%20couple%20at%20beach%20sunset%2C%20soft%20lighting%2C%20minimalist%20composition%2C%20professional%20photography%2C%20high%20quality%2C%20warm%20tones%2C%20gentle%20poses&width=400&height=300&seq=5&orientation=landscape"
+                alt="Pre-wedding 2"
+                class="gallery-item"
+              />
+              <img
+                src="https://readdy.ai/api/search-image?query=elegant%20pre-wedding%20photoshoot%2C%20romantic%20couple%20in%20urban%20setting%2C%20soft%20lighting%2C%20minimalist%20composition%2C%20professional%20photography%2C%20high%20quality%2C%20warm%20tones%2C%20gentle%20poses&width=400&height=300&seq=6&orientation=landscape"
+                alt="Pre-wedding 3"
+                class="gallery-item"
+              />
+              <img
+                src="https://readdy.ai/api/search-image?query=elegant%20pre-wedding%20photoshoot%2C%20romantic%20couple%20in%20traditional%20attire%2C%20soft%20lighting%2C%20minimalist%20composition%2C%20professional%20photography%2C%20high%20quality%2C%20warm%20tones%2C%20gentle%20poses&width=400&height=300&seq=7&orientation=landscape"
+                alt="Pre-wedding 4"
+                class="gallery-item"
+              />
+            </div>
+            <div class="gallery-nav" id="galleryNav"></div>
+          </div>
+          <p class="text-gray-600 italic">
+            "Every love story is beautiful, but ours is my favorite."
+          </p>
+        </div>
+      </section>
+
+      <!-- Gift Section -->
+      <section class="section bg-secondary">
+        <div class="max-w-md mx-auto text-center fade-in">
+          <h2 class="font-serif text-3xl text-gray-800 mb-6">Wedding Gift</h2>
+          <p class="text-gray-600 mb-6">
+            Your presence at our wedding is the greatest gift of all. However,
+            if you wish to honor us with a gift, we have included our account
+            details below:
+          </p>
+
+          <div class="bg-white p-6 rounded-lg shadow-sm mb-4">
+            <h3 class="font-medium text-gray-800 mb-2">Bank Transfer</h3>
+            <div
+              class="flex items-center justify-between bg-gray-50 p-3 rounded-md"
+            >
+              <div>
+                <p class="text-gray-600 text-sm">Bank Central Asia (BCA)</p>
+                <p class="text-gray-800 font-medium">1234 5678 9012</p>
+                <p class="text-gray-600 text-sm">Ahmad Haerul Umam</p>
+              </div>
+              <button
+                class="copy-btn bg-primary bg-opacity-10 text-primary p-2 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer"
+                data-clipboard="1234 5678 9012"
+              >
+                <i class="ri-file-copy-line"></i>
+              </button>
+            </div>
+          </div>
+
+          <div class="bg-white p-6 rounded-lg shadow-sm">
+            <h3 class="font-medium text-gray-800 mb-2">Digital Wallet</h3>
+            <div
+              class="flex items-center justify-between bg-gray-50 p-3 rounded-md"
+            >
+              <div>
+                <p class="text-gray-600 text-sm">GoPay</p>
+                <p class="text-gray-800 font-medium">+62 812 3456 7890</p>
+                <p class="text-gray-600 text-sm">Misna Permata</p>
+              </div>
+              <button
+                class="copy-btn bg-primary bg-opacity-10 text-primary p-2 rounded-full w-10 h-10 flex items-center justify-center cursor-pointer"
+                data-clipboard="+62 812 3456 7890"
+              >
+                <i class="ri-file-copy-line"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RSVP & Comments Section -->
+      <section class="section bg-white">
+        <div class="max-w-md mx-auto text-center fade-in">
+          <h2 class="font-serif text-3xl text-gray-800 mb-6">RSVP & Wishes</h2>
+          <p class="text-gray-600 mb-6">
+            Please let us know if you can celebrate our special day with us and
+            leave your wishes below.
+          </p>
+
+          <form
+            id="rsvpForm"
+            class="bg-secondary bg-opacity-50 p-6 rounded-lg shadow-sm mb-6"
+          >
+            <div class="mb-4">
+              <input
+                type="text"
+                id="name"
+                placeholder="Your Name"
+                class="w-full p-3 border-none rounded-md bg-white"
+                required
+              />
+            </div>
+            <div class="mb-4">
+              <select
+                id="attendance"
+                class="w-full p-3 border-none rounded-md bg-white"
+                required
+              >
+                <option value="" disabled selected>Will you attend?</option>
+                <option value="yes">Yes, I will attend</option>
+                <option value="no">Sorry, I can't attend</option>
+              </select>
+            </div>
+            <div class="mb-4">
+              <textarea
+                id="message"
+                placeholder="Your Wishes"
+                class="w-full p-3 border-none rounded-md bg-white h-24"
+                required
+              ></textarea>
+            </div>
+            <button
+              type="submit"
+              class="w-full bg-primary text-white py-3 px-6 rounded-button hover:bg-opacity-90 transition duration-300"
+            >
+              Send
+            </button>
+          </form>
+
+          <h3 class="font-serif text-2xl text-gray-800 mb-4">
+            Wishes from Loved Ones
+          </h3>
+          <div class="comment-box" id="commentBox">
+            <div class="comment-item">
+              <h4 class="font-medium text-gray-800">James & Emily Wilson</h4>
+              <p class="text-gray-600 text-sm mb-2">June 15, 2025</p>
+              <p class="text-gray-700">
+                Congratulations on your wedding day! May your love grow stronger
+                with each passing day. We're so happy to be part of your
+                celebration!
+              </p>
+            </div>
+            <div class="comment-item">
+              <h4 class="font-medium text-gray-800">Sophia Rahman</h4>
+              <p class="text-gray-600 text-sm mb-2">June 14, 2025</p>
+              <p class="text-gray-700">
+                Wishing you both a lifetime of love, laughter, and happiness
+                together. Your love story is beautiful and inspiring!
+              </p>
+            </div>
+            <div class="comment-item">
+              <h4 class="font-medium text-gray-800">David & Sarah Chen</h4>
+              <p class="text-gray-600 text-sm mb-2">June 12, 2025</p>
+              <p class="text-gray-700">
+                May your journey together be filled with joy and wonderful
+                adventures. Congratulations on your special day!
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Footer Section -->
+      <footer class="py-8 bg-secondary text-center">
+        <h1 class="font-['Pacifico'] text-3xl text-primary mb-4">
+          Umam & Misna
+        </h1>
+        <p class="text-gray-600 mb-4">
+          Thank you for being part of our special day
+        </p>
+        <p class="text-gray-600 text-sm">June 25, 2025</p>
+      </footer>
+    </main>
+
+    <!-- Invitation Modal -->
+    <div class="modal" id="invitationModal">
+      <div class="modal-content">
+        <div class="text-center">
+          <h2 class="font-serif text-2xl text-gray-800 mb-4">
+            A Message from the Couple
+          </h2>
+          <p class="text-gray-600 mb-6">
+            With hearts full of joy and gratitude, we invite you to share in our
+            happiness as we unite in marriage. Our journey together has been
+            blessed with love, understanding, and friendship, and we are excited
+            to begin this new chapter of our lives.
+          </p>
+          <p class="text-gray-600 mb-6">
+            Your presence on our special day would mean the world to us. Let's
+            celebrate love, life, and new beginnings together.
+          </p>
+          <p class="text-gray-800 font-medium mb-6">
+            With love,<br />
+            Umam & Misna
+          </p>
+          <button
+            id="closeModal"
+            class="bg-primary text-white py-2 px-6 rounded-button hover:bg-opacity-90 transition duration-300"
+          >
+            Continue to Invitation
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Copy Notification -->
+    <div
+      id="copyNotification"
+      class="fixed bottom-20 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white py-2 px-4 rounded-md opacity-0 transition-opacity duration-300 pointer-events-none"
+    >
+      Copied to clipboard!
+    </div>
+
+    <!-- Audio Element -->
+    <audio id="bgMusic" loop>
+      <source
+        src="audio/music.mp3"
+        type="audio/mpeg"
+      />
+    </audio>
+
+    <script id="lockScreenScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const lockScreen = document.getElementById("lockScreen");
+        const urlParams = new URLSearchParams(window.location.search);
+        const guestName = urlParams.get("to");
+
+        if (guestName) {
+          document.getElementById("guestName").textContent = guestName;
+        }
+
+        let startY;
+        let endY;
+
+        lockScreen.addEventListener("touchstart", function (e) {
+          startY = e.touches[0].clientY;
+        });
+
+        lockScreen.addEventListener("touchmove", function (e) {
+          endY = e.touches[0].clientY;
+        });
+
+        lockScreen.addEventListener("touchend", function () {
+          if (startY && endY && startY - endY > 70) {
+            lockScreen.classList.add("unlocked");
+            setTimeout(() => {
+              lockScreen.style.display = "none";
+            }, 1000);
+          }
+        });
+
+        // For desktop/testing
+        lockScreen.addEventListener("click", function () {
+          lockScreen.classList.add("unlocked");
+          setTimeout(() => {
+            lockScreen.style.display = "none";
+          }, 1000);
+        });
+      });
+    </script>
+
+    <script id="animationScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const fadeElements = document.querySelectorAll(".fade-in");
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          {
+            threshold: 0.1,
+          },
+        );
+
+        fadeElements.forEach((element) => {
+          observer.observe(element);
+        });
+      });
+    </script>
+
+    <script id="galleryScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const gallery = document.getElementById("gallery");
+        const galleryNav = document.getElementById("galleryNav");
+        const galleryItems = document.querySelectorAll(".gallery-item");
+        let currentIndex = 0;
+
+        // Create navigation dots
+        galleryItems.forEach((_, index) => {
+          const dot = document.createElement("div");
+          dot.classList.add("gallery-dot");
+          if (index === 0) dot.classList.add("active");
+          dot.addEventListener("click", () => {
+            goToSlide(index);
+          });
+          galleryNav.appendChild(dot);
+        });
+
+        // Touch events for swiping
+        let startX;
+        let endX;
+
+        gallery.addEventListener("touchstart", function (e) {
+          startX = e.touches[0].clientX;
+        });
+
+        gallery.addEventListener("touchmove", function (e) {
+          endX = e.touches[0].clientX;
+        });
+
+        gallery.addEventListener("touchend", function () {
+          if (startX && endX) {
+            const diff = startX - endX;
+            if (diff > 50) {
+              // Swipe left
+              nextSlide();
+            } else if (diff < -50) {
+              // Swipe right
+              prevSlide();
+            }
+          }
+        });
+
+        function goToSlide(index) {
+          currentIndex = index;
+          gallery.style.transform = `translateX(-${currentIndex * 100}%)`;
+          updateDots();
+        }
+
+        function nextSlide() {
+          currentIndex = (currentIndex + 1) % galleryItems.length;
+          goToSlide(currentIndex);
+        }
+
+        function prevSlide() {
+          currentIndex =
+            (currentIndex - 1 + galleryItems.length) % galleryItems.length;
+          goToSlide(currentIndex);
+        }
+
+        function updateDots() {
+          const dots = document.querySelectorAll(".gallery-dot");
+          dots.forEach((dot, index) => {
+            if (index === currentIndex) {
+              dot.classList.add("active");
+            } else {
+              dot.classList.remove("active");
+            }
+          });
+        }
+
+        // Auto slide
+        setInterval(nextSlide, 5000);
+      });
+    </script>
+
+    <script id="countdownScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const weddingDate = new Date("June 25, 2025 10:00:00").getTime();
+
+        function updateCountdown() {
+          const now = new Date().getTime();
+          const distance = weddingDate - now;
+
+          const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+          const hours = Math.floor(
+            (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60),
+          );
+          const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+          const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+          document.getElementById("days").textContent = days
+            .toString()
+            .padStart(2, "0");
+          document.getElementById("hours").textContent = hours
+            .toString()
+            .padStart(2, "0");
+          document.getElementById("minutes").textContent = minutes
+            .toString()
+            .padStart(2, "0");
+          document.getElementById("seconds").textContent = seconds
+            .toString()
+            .padStart(2, "0");
+
+          if (distance < 0) {
+            clearInterval(countdownInterval);
+            document.getElementById("days").textContent = "00";
+            document.getElementById("hours").textContent = "00";
+            document.getElementById("minutes").textContent = "00";
+            document.getElementById("seconds").textContent = "00";
+          }
+        }
+
+        updateCountdown();
+        const countdownInterval = setInterval(updateCountdown, 1000);
+      });
+    </script>
+
+    <script id="modalScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const openInvitationBtn = document.getElementById("openInvitation");
+        const closeModalBtn = document.getElementById("closeModal");
+        const invitationModal = document.getElementById("invitationModal");
+
+        openInvitationBtn.addEventListener("click", function () {
+          invitationModal.classList.add("show");
+        });
+
+        closeModalBtn.addEventListener("click", function () {
+          invitationModal.classList.remove("show");
+        });
+
+        invitationModal.addEventListener("click", function (e) {
+          if (e.target === invitationModal) {
+            invitationModal.classList.remove("show");
+          }
+        });
+      });
+    </script>
+
+    <script id="musicScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const bgMusic = document.getElementById("bgMusic");
+        const musicControl = document.getElementById("musicControl");
+        const musicIcon = document.getElementById("musicIcon");
+        let isPlaying = false;
+
+        function toggleMusic() {
+          if (isPlaying) {
+            bgMusic.pause();
+            musicIcon.className = "ri-volume-mute-line text-white";
+          } else {
+            bgMusic.play().catch((error) => {
+              console.log("Auto-play prevented by browser");
+            });
+            musicIcon.className = "ri-volume-up-line text-white";
+          }
+          isPlaying = !isPlaying;
+        }
+
+        musicControl.addEventListener("click", toggleMusic);
+
+        // Try to play music when user interacts with the page
+        document.body.addEventListener(
+          "click",
+          function () {
+            if (!isPlaying) {
+              bgMusic
+                .play()
+                .then(() => {
+                  isPlaying = true;
+                  musicIcon.className = "ri-volume-up-line text-white";
+                })
+                .catch((error) => {
+                  console.log("Auto-play prevented by browser");
+                });
+            }
+          },
+          { once: true },
+        );
+      });
+    </script>
+
+    <script id="copyScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const copyButtons = document.querySelectorAll(".copy-btn");
+        const notification = document.getElementById("copyNotification");
+
+        copyButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const textToCopy = this.getAttribute("data-clipboard");
+            navigator.clipboard.writeText(textToCopy).then(() => {
+              notification.style.opacity = "1";
+              setTimeout(() => {
+                notification.style.opacity = "0";
+              }, 2000);
+            });
+          });
+        });
+      });
+    </script>
+
+    <script id="commentScript">
+      document.addEventListener("DOMContentLoaded", function () {
+        const rsvpForm = document.getElementById("rsvpForm");
+        const commentBox = document.getElementById("commentBox");
+
+        rsvpForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const name = document.getElementById("name").value;
+          const message = document.getElementById("message").value;
+
+          if (name && message) {
+            const today = new Date();
+            const formattedDate = `${today.toLocaleString("default", { month: "long" })} ${today.getDate()}, ${today.getFullYear()}`;
+
+            const commentItem = document.createElement("div");
+            commentItem.classList.add("comment-item");
+            commentItem.innerHTML = `
+                              <h4 class="font-medium text-gray-800">${name}</h4>
+                              <p class="text-gray-600 text-sm mb-2">${formattedDate}</p>
+                              <p class="text-gray-700">${message}</p>
+                          `;
+
+            commentBox.prepend(commentItem);
+
+            // Reset form
+            rsvpForm.reset();
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

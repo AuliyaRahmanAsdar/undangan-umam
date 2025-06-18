@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umam & Misna Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#d4a373',secondary:'#e9edc9'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #fefefe;
+        }
+        
+        .font-cursive {
+            font-family: 'Great Vibes', cursive;
+        }
+        
+        .font-serif {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        
+        .lock-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fefefe;
+            z-index: 50;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: transform 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+        }
+        
+        .lock-screen.slide-up {
+            transform: translateY(-100%);
+        }
+        
+        .slide-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0) translateX(-50%);
+            }
+            40% {
+                transform: translateY(-20px) translateX(-50%);
+            }
+            60% {
+                transform: translateY(-10px) translateX(-50%);
+            }
+        }
+        
+        .section {
+            min-height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease, transform 1s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .gallery-container {
+            width: 100%;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            display: flex;
+            gap: 1rem;
+            padding: 1rem 0;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .gallery-container::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .gallery-item {
+            scroll-snap-align: center;
+            min-width: 250px;
+            height: 350px;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+        
+        .modal-content {
+            width: 90%;
+            max-width: 500px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 2rem;
+            transform: scale(0.8);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .countdown-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background-color: rgba(212, 163, 115, 0.1);
+            border: 1px solid #d4a373;
+            border-radius: 50%;
+        }
+        
+        .comment-item {
+            transition: transform 0.3s ease;
+        }
+        
+        .comment-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background-size: cover;
+            background-position: center;
+            transform: translateZ(-1px) scale(2);
+        }
+    </style>
+</head>
+<body>
+    <!-- Lock Screen -->
+    <div class="lock-screen" id="lockScreen">
+        <div class="text-center mb-8">
+            <p class="text-gray-600 mb-2">Wedding Invitation For</p>
+            <h2 class="text-2xl font-semibold text-gray-800" id="guestName">Dear Guest</h2>
+        </div>
+        
+        <div class="text-center">
+            <p class="text-gray-600 mb-2">You are cordially invited to</p>
+            <h1 class="font-cursive text-5xl text-primary mb-2">Umam & Misna</h1>
+            <p class="text-gray-600">Wedding Celebration</p>
+        </div>
+        
+        <div class="slide-indicator text-center">
+            <p class="text-sm text-gray-500 mb-2">Swipe up to open</p>
+            <i class="ri-arrow-up-line ri-lg text-primary"></i>
+        </div>
+    </div>
+
+    <!-- Couple Introduction Section -->
+    <section class="section bg-white" id="intro">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <div class="mb-6">
+                <img src="https://readdy.ai/api/search-image?query=elegant%20wedding%20couple%20portrait%2C%20Muslim%20couple%20in%20traditional%20wedding%20attire%2C%20soft%20lighting%2C%20romantic%20atmosphere%2C%20professional%20photography%2C%20high%20quality%2C%20dreamy%20effect%2C%20soft%20focus&width=375&height=400&seq=1&orientation=portrait" alt="Umam & Misna" class="w-full h-auto rounded-lg shadow-lg object-cover object-top">
+            </div>
+            
+            <h1 class="font-cursive text-5xl text-primary mb-3">Umam & Misna</h1>
+            <p class="font-serif text-xl text-gray-700 mb-6">June 25, 2025</p>
+            
+            <div class="bg-secondary/20 p-5 rounded-lg border border-primary/20 fade-in">
+                <p class="font-serif text-gray-700 italic">
+                    "And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy."
+                </p>
+            </div>
+            
+            <button id="openInvitation" class="mt-8 bg-primary text-white py-3 px-8 rounded-button shadow-md hover:bg-primary/90 transition-all cursor-pointer">
+                Open Invitation
+            </button>
+        </div>
+    </section>
+
+    <!-- Groom's Biography -->
+    <section class="section bg-white" id="groom">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <h2 class="font-cursive text-4xl text-primary mb-6">The Groom</h2>
+            
+            <div class="mb-6 relative w-64 h-64 mx-auto">
+                <div class="absolute inset-0 bg-primary/10 rounded-full"></div>
+                <img src="https://readdy.ai/api/search-image?query=handsome%20young%20Muslim%20man%20in%20traditional%20wedding%20attire%2C%20professional%20portrait%2C%20soft%20lighting%2C%20elegant%20pose%2C%20high%20quality%2C%20gentle%20smile%2C%20formal%20wear&width=250&height=250&seq=2&orientation=portrait" alt="Ahmad Haerul Umam Baking" class="w-full h-full object-cover object-top rounded-full p-2">
+            </div>
+            
+            <h3 class="font-serif text-2xl text-gray-800 mb-2">Ahmad Haerul Umam Baking</h3>
+            <p class="text-gray-600 mb-4">The first son of</p>
+            <p class="font-serif text-xl text-gray-800 mb-1">Mr. Syahrir Baksit</p>
+            <p class="text-gray-600 mb-1">&</p>
+            <p class="font-serif text-xl text-gray-800">Mrs. Nadira</p>
+        </div>
+    </section>
+
+    <!-- Bride's Biography -->
+    <section class="section bg-white" id="bride">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <h2 class="font-cursive text-4xl text-primary mb-6">The Bride</h2>
+            
+            <div class="mb-6 relative w-64 h-64 mx-auto">
+                <div class="absolute inset-0 bg-primary/10 rounded-full"></div>
+                <img src="https://readdy.ai/api/search-image?query=beautiful%20young%20Muslim%20woman%20in%20traditional%20wedding%20attire%2C%20professional%20portrait%2C%20soft%20lighting%2C%20elegant%20pose%2C%20high%20quality%2C%20gentle%20smile%2C%20formal%20wear&width=250&height=250&seq=3&orientation=portrait" alt="Misna Permata Wulansari" class="w-full h-full object-cover object-top rounded-full p-2">
+            </div>
+            
+            <h3 class="font-serif text-2xl text-gray-800 mb-2">Misna Permata Wulansari</h3>
+            <p class="text-gray-600 mb-4">The beloved daughter of</p>
+            <p class="font-serif text-xl text-gray-800 mb-1">Mr. Rahmat Wulandari</p>
+            <p class="text-gray-600 mb-1">&</p>
+            <p class="font-serif text-xl text-gray-800">Mrs. Siti Aminah</p>
+        </div>
+    </section>
+
+    <!-- Quranic Verse Section -->
+    <section class="section bg-white" id="verse">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <div class="bg-secondary/20 p-6 rounded-lg border border-primary/20">
+                <h2 class="font-cursive text-4xl text-primary mb-6">Surah Ar-Rum 21</h2>
+                
+                <p class="font-serif text-2xl text-gray-800 mb-6 leading-relaxed" dir="rtl">
+                    وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ
+                </p>
+                
+                <p class="text-gray-700 italic">
+                    "And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought."
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Countdown Timer -->
+    <section class="section bg-white" id="countdown">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <h2 class="font-cursive text-4xl text-primary mb-6">Counting Down To</h2>
+            <p class="font-serif text-xl text-gray-800 mb-8">June 25, 2025 • 10:00 AM</p>
+            
+            <div class="flex justify-center gap-4 mb-8">
+                <div class="countdown-item">
+                    <span id="days" class="text-2xl font-semibold text-primary">00</span>
+                    <span class="text-xs text-gray-600">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="hours" class="text-2xl font-semibold text-primary">00</span>
+                    <span class="text-xs text-gray-600">Hours</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="minutes" class="text-2xl font-semibold text-primary">00</span>
+                    <span class="text-xs text-gray-600">Minutes</span>
+                </div>
+                <div class="countdown-item">
+                    <span id="seconds" class="text-2xl font-semibold text-primary">00</span>
+                    <span class="text-xs text-gray-600">Seconds</span>
+                </div>
+            </div>
+            
+            <div class="bg-secondary/20 p-5 rounded-lg border border-primary/20">
+                <h3 class="font-serif text-xl text-gray-800 mb-3">Wedding Ceremony</h3>
+                <p class="text-gray-700 mb-1">Saturday, June 25, 2025</p>
+                <p class="text-gray-700 mb-3">10:00 AM - 2:00 PM</p>
+                <p class="text-gray-700 font-medium">Grand Ballroom, Emerald Hotel</p>
+                <p class="text-gray-700 mb-4">123 Wedding Avenue, Celebration City</p>
+                
+                <button id="addToCalendar" class="bg-primary text-white py-2 px-4 rounded-button shadow-md hover:bg-primary/90 transition-all cursor-pointer">
+                    <i class="ri-calendar-line ri-fw mr-1"></i> Add to Calendar
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Photo Gallery -->
+    <section class="section bg-white" id="gallery">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <h2 class="font-cursive text-4xl text-primary mb-6">Our Moments</h2>
+            <p class="text-gray-700 mb-6">Swipe to see our journey together</p>
+            
+            <div class="gallery-container">
+                <div class="gallery-item cursor-pointer" data-img="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20romantic%20outdoor%20setting%2C%20soft%20natural%20lighting%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20candid%20moment%2C%20high%20quality&width=250&height=350&seq=4&orientation=portrait">
+                    <img src="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20romantic%20outdoor%20setting%2C%20soft%20natural%20lighting%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20candid%20moment%2C%20high%20quality&width=250&height=350&seq=4&orientation=portrait" alt="Pre-wedding photo 1" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="gallery-item cursor-pointer" data-img="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20garden%20setting%20with%20flowers%2C%20soft%20golden%20hour%20lighting%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20romantic%20pose%2C%20high%20quality&width=250&height=350&seq=5&orientation=portrait">
+                    <img src="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20garden%20setting%20with%20flowers%2C%20soft%20golden%20hour%20lighting%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20romantic%20pose%2C%20high%20quality&width=250&height=350&seq=5&orientation=portrait" alt="Pre-wedding photo 2" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="gallery-item cursor-pointer" data-img="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20architectural%20backdrop%2C%20soft%20evening%20lighting%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20artistic%20composition%2C%20high%20quality&width=250&height=350&seq=6&orientation=portrait">
+                    <img src="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20architectural%20backdrop%2C%20soft%20evening%20lighting%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20artistic%20composition%2C%20high%20quality&width=250&height=350&seq=6&orientation=portrait" alt="Pre-wedding photo 3" class="w-full h-full object-cover object-top">
+                </div>
+                <div class="gallery-item cursor-pointer" data-img="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20beach%20sunset%2C%20silhouette%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20romantic%20atmosphere%2C%20high%20quality&width=250&height=350&seq=7&orientation=portrait">
+                    <img src="https://readdy.ai/api/search-image?query=Muslim%20couple%20pre-wedding%20photoshoot%2C%20beach%20sunset%2C%20silhouette%2C%20elegant%20traditional%20attire%2C%20professional%20photography%2C%20romantic%20atmosphere%2C%20high%20quality&width=250&height=350&seq=7&orientation=portrait" alt="Pre-wedding photo 4" class="w-full h-full object-cover object-top">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wedding Gift Section -->
+    <section class="section bg-white" id="gift">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <h2 class="font-cursive text-4xl text-primary mb-6">Wedding Gift</h2>
+            <p class="text-gray-700 mb-6">Your presence is our greatest gift. However, if you wish to honor us with a gift, we have provided the following options:</p>
+            
+            <div class="bg-secondary/20 p-5 rounded-lg border border-primary/20 mb-6">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <i class="ri-bank-line ri-2x text-primary"></i>
+                </div>
+                <h3 class="font-serif text-xl text-gray-800 mb-2">Bank Transfer</h3>
+                <p class="text-gray-700 mb-2">Ahmad Haerul Umam Baking</p>
+                <p class="text-gray-700 font-medium mb-3">1234 5678 9012 3456</p>
+                <button class="copy-btn bg-primary/10 text-primary py-2 px-4 rounded-button hover:bg-primary/20 transition-all cursor-pointer" data-copy="1234 5678 9012 3456">
+                    <i class="ri-file-copy-line ri-fw mr-1"></i> Copy
+                </button>
+            </div>
+            
+            <div class="bg-secondary/20 p-5 rounded-lg border border-primary/20">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center">
+                    <i class="ri-bank-line ri-2x text-primary"></i>
+                </div>
+                <h3 class="font-serif text-xl text-gray-800 mb-2">Bank Transfer</h3>
+                <p class="text-gray-700 mb-2">Misna Permata Wulansari</p>
+                <p class="text-gray-700 font-medium mb-3">9876 5432 1098 7654</p>
+                <button class="copy-btn bg-primary/10 text-primary py-2 px-4 rounded-button hover:bg-primary/20 transition-all cursor-pointer" data-copy="9876 5432 1098 7654">
+                    <i class="ri-file-copy-line ri-fw mr-1"></i> Copy
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wishes & Comments -->
+    <section class="section bg-white" id="wishes">
+        <div class="max-w-md mx-auto text-center fade-in">
+            <h2 class="font-cursive text-4xl text-primary mb-6">Wishes & Prayers</h2>
+            <p class="text-gray-700 mb-6">Leave your wishes and prayers for our journey together</p>
+            
+            <form id="wishForm" class="mb-8">
+                <div class="mb-4">
+                    <input type="text" id="name" placeholder="Your Name" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50">
+                </div>
+                <div class="mb-4">
+                    <textarea id="message" placeholder="Your Message" rows="4" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-primary text-white py-3 px-6 rounded-button shadow-md hover:bg-primary/90 transition-all cursor-pointer">
+                    Send Wishes
+                </button>
+            </form>
+            
+            <div id="wishesContainer" class="space-y-4">
+                <div class="comment-item bg-secondary/20 p-4 rounded-lg border border-primary/20 text-left">
+                    <p class="font-medium text-gray-800 mb-1">Sarah Johnson</p>
+                    <p class="text-gray-700">May your marriage be filled with all the right ingredients: love, joy, tenderness, and patience. Congratulations!</p>
+                </div>
+                
+                <div class="comment-item bg-secondary/20 p-4 rounded-lg border border-primary/20 text-left">
+                    <p class="font-medium text-gray-800 mb-1">Michael Chen</p>
+                    <p class="text-gray-700">Wishing you a lifetime of love and happiness. May Allah bless your union and keep you both in His care always.</p>
+                </div>
+                
+                <div class="comment-item bg-secondary/20 p-4 rounded-lg border border-primary/20 text-left">
+                    <p class="font-medium text-gray-800 mb-1">Aisha Rahman</p>
+                    <p class="text-gray-700">May your journey together be full of love and happiness, and may Allah shower His blessings on your marriage. Congratulations!</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-primary/5 text-center">
+        <div class="max-w-md mx-auto">
+            <h2 class="font-cursive text-3xl text-primary mb-4">Umam & Misna</h2>
+            <p class="text-gray-700 mb-6">Thank you for celebrating with us</p>
+            
+            <div class="flex justify-center space-x-4 mb-6">
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-all cursor-pointer">
+                    <i class="ri-instagram-line ri-lg"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-all cursor-pointer">
+                    <i class="ri-facebook-line ri-lg"></i>
+                </a>
+                <a href="#" class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition-all cursor-pointer">
+                    <i class="ri-twitter-x-line ri-lg"></i>
+                </a>
+            </div>
+            
+            <p class="text-sm text-gray-600">© 2025 Umam & Misna Wedding</p>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div class="modal" id="imageModal">
+        <div class="modal-content p-2">
+            <img id="modalImage" src="" alt="Gallery image" class="w-full h-auto rounded-lg">
+            <button id="closeModal" class="absolute top-2 right-2 w-8 h-8 flex items-center justify-center bg-white/80 text-gray-800 rounded-full hover:bg-white transition-all cursor-pointer">
+                <i class="ri-close-line ri-lg"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Copy Success Modal -->
+    <div class="modal" id="copyModal">
+        <div class="modal-content p-6 max-w-xs">
+            <div class="text-center">
+                <div class="w-16 h-16 mx-auto mb-4 flex items-center justify-center text-green-500">
+                    <i class="ri-check-line ri-3x"></i>
+                </div>
+                <h3 class="text-xl font-medium text-gray-800 mb-2">Copied Successfully!</h3>
+                <p class="text-gray-600 mb-4">The account number has been copied to your clipboard.</p>
+                <button id="closeCopyModal" class="bg-primary text-white py-2 px-6 rounded-button shadow-md hover:bg-primary/90 transition-all cursor-pointer">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calendar Modal -->
+    <div class="modal" id="calendarModal">
+        <div class="modal-content p-6">
+            <h3 class="text-xl font-medium text-gray-800 mb-4">Add to Calendar</h3>
+            <div class="space-y-3">
+                <a href="#" class="flex items-center p-3 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-all cursor-pointer">
+                    <i class="ri-google-line ri-lg mr-3"></i>
+                    <span>Google Calendar</span>
+                </a>
+                <a href="#" class="flex items-center p-3 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-all cursor-pointer">
+                    <i class="ri-apple-line ri-lg mr-3"></i>
+                    <span>Apple Calendar</span>
+                </a>
+                <a href="#" class="flex items-center p-3 bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-all cursor-pointer">
+                    <i class="ri-microsoft-line ri-lg mr-3"></i>
+                    <span>Outlook Calendar</span>
+                </a>
+            </div>
+            <button id="closeCalendarModal" class="mt-4 w-full bg-primary text-white py-2 px-6 rounded-button shadow-md hover:bg-primary/90 transition-all cursor-pointer">
+                Close
+            </button>
+        </div>
+    </div>
+
+    <!-- Lock Screen Script -->
+    <script id="lockScreenScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const lockScreen = document.getElementById('lockScreen');
+            const urlParams = new URLSearchParams(window.location.search);
+            const guestName = urlParams.get('to');
+            
+            if (guestName) {
+                document.getElementById('guestName').textContent = guestName;
+            }
+            
+            lockScreen.addEventListener('touchstart', handleTouchStart, false);
+            lockScreen.addEventListener('touchmove', handleTouchMove, false);
+            
+            let startY = 0;
+            
+            function handleTouchStart(evt) {
+                startY = evt.touches[0].clientY;
+            }
+            
+            function handleTouchMove(evt) {
+                if (!startY) return;
+                
+                const currentY = evt.touches[0].clientY;
+                const diffY = startY - currentY;
+                
+                // If swiped up more than 100px
+                if (diffY > 100) {
+                    lockScreen.classList.add('slide-up');
+                    setTimeout(() => {
+                        lockScreen.style.display = 'none';
+                    }, 1500);
+                }
+                
+                startY = 0;
+            }
+            
+            // Also allow click to open
+            document.getElementById('openInvitation').addEventListener('click', function() {
+                lockScreen.classList.add('slide-up');
+                setTimeout(() => {
+                    lockScreen.style.display = 'none';
+                }, 1500);
+            });
+        });
+    </script>
+
+    <!-- Scroll Animation Script -->
+    <script id="scrollAnimationScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            function checkScroll() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight * 0.85) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            // Initial check
+            checkScroll();
+            
+            // Check on scroll
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+
+    <!-- Countdown Timer Script -->
+    <script id="countdownScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const weddingDate = new Date('June 25, 2025 10:00:00').getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = days.toString().padStart(2, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                
+                if (distance < 0) {
+                    clearInterval(countdownInterval);
+                    document.getElementById('days').textContent = '00';
+                    document.getElementById('hours').textContent = '00';
+                    document.getElementById('minutes').textContent = '00';
+                    document.getElementById('seconds').textContent = '00';
+                }
+            }
+            
+            // Initial update
+            updateCountdown();
+            
+            // Update every second
+            const countdownInterval = setInterval(updateCountdown, 1000);
+        });
+    </script>
+
+    <!-- Gallery Modal Script -->
+    <script id="galleryScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const galleryItems = document.querySelectorAll('.gallery-item');
+            const imageModal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const closeModal = document.getElementById('closeModal');
+            
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const imgSrc = this.getAttribute('data-img');
+                    modalImage.src = imgSrc;
+                    imageModal.classList.add('active');
+                });
+            });
+            
+            closeModal.addEventListener('click', function() {
+                imageModal.classList.remove('active');
+            });
+            
+            imageModal.addEventListener('click', function(e) {
+                if (e.target === imageModal) {
+                    imageModal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- Copy Button Script -->
+    <script id="copyScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButtons = document.querySelectorAll('.copy-btn');
+            const copyModal = document.getElementById('copyModal');
+            const closeCopyModal = document.getElementById('closeCopyModal');
+            
+            copyButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const textToCopy = this.getAttribute('data-copy');
+                    navigator.clipboard.writeText(textToCopy).then(() => {
+                        copyModal.classList.add('active');
+                    });
+                });
+            });
+            
+            closeCopyModal.addEventListener('click', function() {
+                copyModal.classList.remove('active');
+            });
+            
+            copyModal.addEventListener('click', function(e) {
+                if (e.target === copyModal) {
+                    copyModal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- Calendar Modal Script -->
+    <script id="calendarScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToCalendarBtn = document.getElementById('addToCalendar');
+            const calendarModal = document.getElementById('calendarModal');
+            const closeCalendarModal = document.getElementById('closeCalendarModal');
+            
+            addToCalendarBtn.addEventListener('click', function() {
+                calendarModal.classList.add('active');
+            });
+            
+            closeCalendarModal.addEventListener('click', function() {
+                calendarModal.classList.remove('active');
+            });
+            
+            calendarModal.addEventListener('click', function(e) {
+                if (e.target === calendarModal) {
+                    calendarModal.classList.remove('active');
+                }
+            });
+        });
+    </script>
+
+    <!-- Wishes Form Script -->
+    <script id="wishesScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const wishForm = document.getElementById('wishForm');
+            const wishesContainer = document.getElementById('wishesContainer');
+            
+            wishForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const nameInput = document.getElementById('name');
+                const messageInput = document.getElementById('message');
+                
+                const name = nameInput.value.trim();
+                const message = messageInput.value.trim();
+                
+                if (name && message) {
+                    // Create new comment element
+                    const commentDiv = document.createElement('div');
+                    commentDiv.className = 'comment-item bg-secondary/20 p-4 rounded-lg border border-primary/20 text-left';
+                    
+                    const nameP = document.createElement('p');
+                    nameP.className = 'font-medium text-gray-800 mb-1';
+                    nameP.textContent = name;
+                    
+                    const messageP = document.createElement('p');
+                    messageP.className = 'text-gray-700';
+                    messageP.textContent = message;
+                    
+                    commentDiv.appendChild(nameP);
+                    commentDiv.appendChild(messageP);
+                    
+                    // Add to the beginning of the container
+                    wishesContainer.insertBefore(commentDiv, wishesContainer.firstChild);
+                    
+                    // Clear form
+                    nameInput.value = '';
+                    messageInput.value = '';
+                    
+                    // Add animation
+                    setTimeout(() => {
+                        commentDiv.style.opacity = '0';
+                        commentDiv.style.transform = 'translateY(20px)';
+                        
+                        setTimeout(() => {
+                            commentDiv.style.opacity = '1';
+                            commentDiv.style.transform = 'translateY(0)';
+                            commentDiv.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                        }, 50);
+                    }, 0);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

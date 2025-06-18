@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Umam & Misna Wedding Invitation</title>
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config={theme:{extend:{colors:{primary:'#BDB76B',secondary:'#3D3D3D'},borderRadius:{'none':'0px','sm':'4px',DEFAULT:'8px','md':'12px','lg':'16px','xl':'20px','2xl':'24px','3xl':'32px','full':'9999px','button':'8px'}}}}</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Great+Vibes&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/4.6.0/remixicon.min.css">
+    <style>
+        :where([class^="ri-"])::before { content: "\f3c2"; }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #121212;
+            color: #f5f5f5;
+            overflow-x: hidden;
+        }
+        .font-great-vibes {
+            font-family: 'Great Vibes', cursive;
+        }
+        .font-cormorant {
+            font-family: 'Cormorant Garamond', serif;
+        }
+        .lock-screen {
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 50;
+            transition: transform 0.8s cubic-bezier(0.86, 0, 0.07, 1);
+        }
+        .slide-up {
+            transform: translateY(-100%);
+        }
+        .quote-popup {
+            animation: fadeInUp 0.8s ease forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .swipe-indicator {
+            animation: swipeUp 1.5s infinite;
+        }
+        @keyframes swipeUp {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .gallery-container {
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .gallery-item {
+            scroll-snap-align: center;
+        }
+        .countdown-item {
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .countdown-item::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            width: 30px;
+            height: 1px;
+            background-color: #BDB76B;
+        }
+        .section {
+            min-height: 100vh;
+            padding: 2rem 1.5rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .arabic-text {
+            font-family: 'Scheherazade New', serif;
+            line-height: 2;
+            direction: rtl;
+        }
+        .comment-box {
+            background-color: rgba(189, 183, 107, 0.1);
+            border: 1px solid rgba(189, 183, 107, 0.3);
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Lock Screen -->
+    <div id="lockScreen" class="lock-screen bg-black flex flex-col items-center justify-center text-center p-6">
+        <div class="mb-8">
+            <h1 class="font-great-vibes text-primary text-5xl mb-2">Wedding Invitation</h1>
+            <p class="text-sm text-gray-300 mb-6">for</p>
+            <h2 id="guestName" class="font-cormorant text-2xl text-white mb-1">Dear Guest</h2>
+            <p class="text-xs text-gray-400">You are cordially invited to celebrate our wedding</p>
+        </div>
+        
+        <div class="mt-10 flex flex-col items-center">
+            <p class="text-xs text-gray-400 mb-3">Swipe up to open</p>
+            <div class="swipe-indicator w-10 h-10 flex items-center justify-center">
+                <i class="ri-arrow-up-line ri-xl text-primary"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- Hero Section -->
+        <section id="hero" class="section bg-black relative">
+            <div class="absolute inset-0 opacity-20" style="background-image: url('https://readdy.ai/api/search-image?query=elegant%2520gold%2520khaki%2520floral%2520pattern%2520on%2520dark%2520background%2C%2520minimalist%2520luxury%2520design%2C%2520subtle%2520geometric%2520elements%2C%2520modern%2520wedding%2520theme%2C%2520high%2520quality%2520texture&width=375&height=762&seq=1&orientation=portrait'); background-size: cover; background-position: center;"></div>
+            
+            <div class="relative z-10 flex flex-col items-center justify-center h-full">
+                <div class="mb-8 w-48 h-48 rounded-full overflow-hidden border-2 border-primary">
+                    <img src="https://readdy.ai/api/search-image?query=elegant%2520wedding%2520couple%2520portrait%2C%2520minimalist%2520style%2C%2520dark%2520background%2C%2520soft%2520lighting%2C%2520romantic%2520pose%2C%2520formal%2520attire%2C%2520khaki%2520and%2520gold%2520accents%2C%2520professional%2520photography%2C%2520high%2520quality&width=400&height=400&seq=2&orientation=squarish" alt="Umam & Misna" class="w-full h-full object-cover">
+                </div>
+                
+                <h1 class="font-great-vibes text-5xl text-primary mb-4">Umam & Misna</h1>
+                <p class="font-cormorant text-lg text-white mb-8">18.06.2025</p>
+                
+                <div id="quoteContainer" class="mt-6 max-w-xs text-center">
+                    <p class="quote-popup font-cormorant text-lg italic text-gray-300">"Two souls with but a single thought, two hearts that beat as one."</p>
+                </div>
+                
+                <div class="mt-12 flex flex-col items-center">
+                    <p class="text-xs text-gray-400 mb-3">Scroll down to continue</p>
+                    <div class="swipe-indicator w-10 h-10 flex items-center justify-center">
+                        <i class="ri-arrow-down-line ri-xl text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Groom Section -->
+        <section id="groom" class="section bg-black">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-great-vibes text-4xl text-primary mb-8 text-center">The Groom</h2>
+                
+                <div class="flex flex-col items-center">
+                    <div class="w-40 h-40 rounded-full overflow-hidden border-2 border-primary mb-6">
+                        <img src="https://readdy.ai/api/search-image?query=handsome%2520groom%2520portrait%2C%2520indonesian%2520man%2C%2520formal%2520suit%2C%2520minimalist%2520style%2C%2520dark%2520background%2C%2520professional%2520photography%2C%2520elegant%2520pose%2C%2520soft%2520lighting%2C%2520high%2520quality&width=300&height=300&seq=3&orientation=squarish" alt="Ahmad Haerul Umam Baking" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <h3 class="font-cormorant text-2xl text-white mb-2 text-center">Ahmad Haerul Umam Baking</h3>
+                    <p class="text-sm text-gray-300 mb-6 text-center">The first son of</p>
+                    <p class="font-cormorant text-lg text-white mb-1 text-center">Mr. Syahrir Baksit</p>
+                    <p class="text-sm text-gray-400 mb-1 text-center">&</p>
+                    <p class="font-cormorant text-lg text-white text-center">Mrs. Nadira</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Bride Section -->
+        <section id="bride" class="section bg-black">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-great-vibes text-4xl text-primary mb-8 text-center">The Bride</h2>
+                
+                <div class="flex flex-col items-center">
+                    <div class="w-40 h-40 rounded-full overflow-hidden border-2 border-primary mb-6">
+                        <img src="https://readdy.ai/api/search-image?query=beautiful%2520bride%2520portrait%2C%2520indonesian%2520woman%2C%2520elegant%2520wedding%2520dress%2C%2520minimalist%2520style%2C%2520dark%2520background%2C%2520professional%2520photography%2C%2520graceful%2520pose%2C%2520soft%2520lighting%2C%2520high%2520quality&width=300&height=300&seq=4&orientation=squarish" alt="Misna Permata Wulansari" class="w-full h-full object-cover">
+                    </div>
+                    
+                    <h3 class="font-cormorant text-2xl text-white mb-2 text-center">Misna Permata Wulansari</h3>
+                    <p class="text-sm text-gray-300 mb-6 text-center">The beloved daughter of</p>
+                    <p class="font-cormorant text-lg text-white mb-1 text-center">Mr. Wulan Dharma</p>
+                    <p class="text-sm text-gray-400 mb-1 text-center">&</p>
+                    <p class="font-cormorant text-lg text-white text-center">Mrs. Sari Indah</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Quran Verse Section -->
+        <section id="quran" class="section bg-black">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-great-vibes text-4xl text-primary mb-8 text-center">Surah Ar-Rum 21</h2>
+                
+                <div class="p-6 border border-primary rounded-lg bg-black bg-opacity-60 mb-8">
+                    <p class="arabic-text text-2xl text-primary mb-6 text-center">وَمِنْ آيَاتِهِ أَنْ خَلَقَ لَكُم مِّنْ أَنفُسِكُمْ أَزْوَاجًا لِّتَسْكُنُوا إِلَيْهَا وَجَعَلَ بَيْنَكُم مَّوَدَّةً وَرَحْمَةً ۚ إِنَّ فِي ذَٰلِكَ لَآيَاتٍ لِّقَوْمٍ يَتَفَكَّرُونَ</p>
+                    
+                    <p class="font-cormorant text-lg text-white text-center italic">"And of His signs is that He created for you from yourselves mates that you may find tranquility in them; and He placed between you affection and mercy. Indeed in that are signs for a people who give thought."</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Countdown Section -->
+        <section id="countdown" class="section bg-black">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-great-vibes text-4xl text-primary mb-8 text-center">Counting Down To</h2>
+                
+                <div class="mb-8">
+                    <div class="flex flex-col items-center justify-center mb-6">
+                        <p class="font-cormorant text-2xl text-white mb-2">Wednesday, June 18, 2025</p>
+                        <p class="text-sm text-gray-300">10:00 AM - 4:00 PM</p>
+                    </div>
+                    
+                    <div class="flex flex-col items-center justify-center mb-6">
+                        <p class="font-cormorant text-xl text-white mb-2">Grand Ballroom</p>
+                        <p class="text-sm text-gray-300 text-center">Luxury Hotel & Resort</p>
+                        <p class="text-sm text-gray-300 text-center">Jakarta, Indonesia</p>
+                    </div>
+                </div>
+                
+                <div id="countdownTimer" class="flex justify-between items-center max-w-xs mx-auto">
+                    <div class="countdown-item">
+                        <span id="days" class="font-cormorant text-3xl text-primary">00</span>
+                        <span class="text-xs text-gray-300 mt-1">Days</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="hours" class="font-cormorant text-3xl text-primary">00</span>
+                        <span class="text-xs text-gray-300 mt-1">Hours</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="minutes" class="font-cormorant text-3xl text-primary">00</span>
+                        <span class="text-xs text-gray-300 mt-1">Minutes</span>
+                    </div>
+                    <div class="countdown-item">
+                        <span id="seconds" class="font-cormorant text-3xl text-primary">00</span>
+                        <span class="text-xs text-gray-300 mt-1">Seconds</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section id="gallery" class="section bg-black">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-great-vibes text-4xl text-primary mb-8 text-center">Our Moments</h2>
+                
+                <div class="gallery-container flex overflow-x-auto pb-4 -mx-4 px-4">
+                    <div class="gallery-item flex-shrink-0 w-64 h-80 mr-4 rounded-lg overflow-hidden">
+                        <img src="https://readdy.ai/api/search-image?query=romantic%2520pre-wedding%2520photo%2C%2520couple%2520in%2520elegant%2520attire%2C%2520dark%2520moody%2520setting%2C%2520khaki%2520gold%2520accents%2C%2520professional%2520photography%2C%2520artistic%2520composition%2C%2520soft%2520lighting%2C%2520high%2520quality&width=300&height=400&seq=5&orientation=portrait" alt="Pre-wedding photo 1" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item flex-shrink-0 w-64 h-80 mr-4 rounded-lg overflow-hidden">
+                        <img src="https://readdy.ai/api/search-image?query=elegant%2520pre-wedding%2520photo%2C%2520couple%2520in%2520formal%2520attire%2C%2520romantic%2520pose%2C%2520dark%2520background%2C%2520khaki%2520gold%2520elements%2C%2520professional%2520photography%2C%2520artistic%2520composition%2C%2520soft%2520lighting%2C%2520high%2520quality&width=300&height=400&seq=6&orientation=portrait" alt="Pre-wedding photo 2" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item flex-shrink-0 w-64 h-80 mr-4 rounded-lg overflow-hidden">
+                        <img src="https://readdy.ai/api/search-image?query=stylish%2520pre-wedding%2520photo%2C%2520indonesian%2520couple%2C%2520minimalist%2520composition%2C%2520dark%2520setting%2C%2520khaki%2520gold%2520accents%2C%2520professional%2520photography%2C%2520artistic%2520pose%2C%2520soft%2520lighting%2C%2520high%2520quality&width=300&height=400&seq=7&orientation=portrait" alt="Pre-wedding photo 3" class="w-full h-full object-cover">
+                    </div>
+                    <div class="gallery-item flex-shrink-0 w-64 h-80 rounded-lg overflow-hidden">
+                        <img src="https://readdy.ai/api/search-image?query=modern%2520pre-wedding%2520photo%2C%2520couple%2520in%2520elegant%2520attire%2C%2520minimalist%2520style%2C%2520dark%2520background%2C%2520khaki%2520gold%2520elements%2C%2520professional%2520photography%2C%2520artistic%2520composition%2C%2520soft%2520lighting%2C%2520high%2520quality&width=300&height=400&seq=8&orientation=portrait" alt="Pre-wedding photo 4" class="w-full h-full object-cover">
+                    </div>
+                </div>
+                
+                <p class="text-xs text-gray-400 text-center mt-4">Swipe left to see more photos</p>
+            </div>
+        </section>
+
+        <!-- Gift Section -->
+        <section id="gift" class="section bg-black">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-great-vibes text-4xl text-primary mb-8 text-center">Wedding Gift</h2>
+                
+                <div class="p-6 border border-primary rounded-lg bg-black bg-opacity-60 mb-8">
+                    <p class="text-sm text-gray-300 text-center mb-6">Your presence at our wedding is the greatest gift of all. However, if you wish to honor us with a gift, we would be grateful for your contribution.</p>
+                    
+                    <div class="mb-6">
+                        <h3 class="font-cormorant text-xl text-white mb-2 text-center">Bank Transfer</h3>
+                        <div class="flex flex-col items-center">
+                            <p class="text-sm text-gray-300 mb-1">Bank Central Asia (BCA)</p>
+                            <p class="font-cormorant text-lg text-primary mb-2">1234 5678 9012 3456</p>
+                            <p class="text-sm text-gray-300">Ahmad Haerul Umam Baking</p>
+                            <button id="copyAccount" class="mt-3 px-4 py-2 bg-primary text-black text-sm font-medium rounded-button cursor-pointer hover:bg-opacity-90 transition-all">Copy Account Number</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer & Comments Section -->
+        <section id="comments" class="section bg-black">
+            <div class="max-w-md mx-auto">
+                <h2 class="font-great-vibes text-4xl text-primary mb-8 text-center">Wishes & Prayers</h2>
+                
+                <div class="p-6 border border-primary rounded-lg bg-black bg-opacity-60 mb-8">
+                    <p class="font-cormorant text-lg text-white text-center italic mb-8">"May your marriage be blessed with love, joy, and companionship for all the years of your lives, may your love grow stronger with each passing day, and may your life together be filled with all the blessings you deserve."</p>
+                    
+                    <form id="commentForm" class="mb-6">
+                        <div class="mb-4">
+                            <label for="name" class="block text-sm text-gray-300 mb-1">Name</label>
+                            <input type="text" id="name" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-button text-white focus:outline-none focus:border-primary" required>
+                        </div>
+                        
+                        <div class="mb-4">
+                            <label for="message" class="block text-sm text-gray-300 mb-1">Your Wishes</label>
+                            <textarea id="message" rows="4" class="w-full px-3 py-2 bg-gray-800 border border-gray-700 rounded-button text-white focus:outline-none focus:border-primary" required></textarea>
+                        </div>
+                        
+                        <button type="submit" class="w-full px-4 py-2 bg-primary text-black text-sm font-medium rounded-button cursor-pointer hover:bg-opacity-90 transition-all">Send Wishes</button>
+                    </form>
+                    
+                    <div id="commentsContainer">
+                        <h3 class="font-cormorant text-xl text-white mb-4">Recent Wishes</h3>
+                        
+                        <div class="comment-box p-4 rounded-lg mb-4">
+                            <p class="font-medium text-white mb-1">Sarah Johnson</p>
+                            <p class="text-sm text-gray-300">Congratulations on your special day! May your love grow stronger with each passing day. Wishing you a lifetime of happiness together!</p>
+                            <p class="text-xs text-gray-400 mt-2">June 10, 2025</p>
+                        </div>
+                        
+                        <div class="comment-box p-4 rounded-lg mb-4">
+                            <p class="font-medium text-white mb-1">Michael Chen</p>
+                            <p class="text-sm text-gray-300">Wishing you both a beautiful journey together filled with love, joy and countless precious moments. Congratulations!</p>
+                            <p class="text-xs text-gray-400 mt-2">June 8, 2025</p>
+                        </div>
+                        
+                        <div class="comment-box p-4 rounded-lg">
+                            <p class="font-medium text-white mb-1">Amelia Rodriguez</p>
+                            <p class="text-sm text-gray-300">May Allah bless your union and grant you patience, understanding, and deep love for one another. So happy for you both!</p>
+                            <p class="text-xs text-gray-400 mt-2">June 5, 2025</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-8 mb-4">
+                    <p class="font-great-vibes text-3xl text-primary mb-2">Thank You</p>
+                    <p class="text-sm text-gray-300">Umam & Misna</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script id="lockScreenScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const lockScreen = document.getElementById('lockScreen');
+            const guestName = document.getElementById('guestName');
+            
+            // Set guest name from URL parameter if available
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('to');
+            if (name) {
+                guestName.textContent = name;
+            }
+            
+            // Handle swipe up to unlock
+            let touchStartY = 0;
+            let touchEndY = 0;
+            
+            lockScreen.addEventListener('touchstart', function(e) {
+                touchStartY = e.changedTouches[0].screenY;
+            });
+            
+            lockScreen.addEventListener('touchend', function(e) {
+                touchEndY = e.changedTouches[0].screenY;
+                handleSwipeGesture();
+            });
+            
+            function handleSwipeGesture() {
+                if (touchStartY - touchEndY > 100) {
+                    lockScreen.classList.add('slide-up');
+                }
+            }
+            
+            // Also allow click to open for desktop users
+            lockScreen.addEventListener('click', function() {
+                lockScreen.classList.add('slide-up');
+            });
+        });
+    </script>
+
+    <script id="quoteRotationScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const quotes = [
+                "Two souls with but a single thought, two hearts that beat as one.",
+                "A successful marriage requires falling in love many times, always with the same person.",
+                "The best thing to hold onto in life is each other.",
+                "To love and to be loved is to feel the sun from both sides.",
+                "Love is not about how many days, months, or years you have been together. Love is about how much you love each other every single day.",
+                "A great marriage is not when the perfect couple comes together. It is when an imperfect couple learns to enjoy their differences."
+            ];
+            
+            const quoteContainer = document.getElementById('quoteContainer');
+            let currentQuoteIndex = 0;
+            
+            function rotateQuote() {
+                const quoteElement = document.createElement('p');
+                quoteElement.classList.add('quote-popup', 'font-cormorant', 'text-lg', 'italic', 'text-gray-300');
+                quoteElement.textContent = quotes[currentQuoteIndex];
+                
+                quoteContainer.innerHTML = '';
+                quoteContainer.appendChild(quoteElement);
+                
+                currentQuoteIndex = (currentQuoteIndex + 1) % quotes.length;
+            }
+            
+            // Initial quote
+            rotateQuote();
+            
+            // Rotate quotes every 5 seconds
+            setInterval(rotateQuote, 5000);
+        });
+    </script>
+
+    <script id="countdownScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const daysElement = document.getElementById('days');
+            const hoursElement = document.getElementById('hours');
+            const minutesElement = document.getElementById('minutes');
+            const secondsElement = document.getElementById('seconds');
+            
+            // Set the wedding date - June 18, 2025 at 10:00 AM
+            const weddingDate = new Date('June 18, 2025 10:00:00').getTime();
+            
+            function updateCountdown() {
+                const now = new Date().getTime();
+                const distance = weddingDate - now;
+                
+                if (distance < 0) {
+                    // Wedding day has passed
+                    daysElement.textContent = '00';
+                    hoursElement.textContent = '00';
+                    minutesElement.textContent = '00';
+                    secondsElement.textContent = '00';
+                    return;
+                }
+                
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                daysElement.textContent = days.toString().padStart(2, '0');
+                hoursElement.textContent = hours.toString().padStart(2, '0');
+                minutesElement.textContent = minutes.toString().padStart(2, '0');
+                secondsElement.textContent = seconds.toString().padStart(2, '0');
+            }
+            
+            // Initial countdown
+            updateCountdown();
+            
+            // Update countdown every second
+            setInterval(updateCountdown, 1000);
+        });
+    </script>
+
+    <script id="commentFormScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const commentForm = document.getElementById('commentForm');
+            const commentsContainer = document.getElementById('commentsContainer');
+            
+            commentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const name = document.getElementById('name').value;
+                const message = document.getElementById('message').value;
+                
+                if (name && message) {
+                    // Create new comment
+                    const commentBox = document.createElement('div');
+                    commentBox.classList.add('comment-box', 'p-4', 'rounded-lg', 'mb-4');
+                    
+                    const nameElement = document.createElement('p');
+                    nameElement.classList.add('font-medium', 'text-white', 'mb-1');
+                    nameElement.textContent = name;
+                    
+                    const messageElement = document.createElement('p');
+                    messageElement.classList.add('text-sm', 'text-gray-300');
+                    messageElement.textContent = message;
+                    
+                    const dateElement = document.createElement('p');
+                    dateElement.classList.add('text-xs', 'text-gray-400', 'mt-2');
+                    
+                    // Format current date
+                    const now = new Date();
+                    const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                    dateElement.textContent = now.toLocaleDateString('en-US', options);
+                    
+                    // Append elements to comment box
+                    commentBox.appendChild(nameElement);
+                    commentBox.appendChild(messageElement);
+                    commentBox.appendChild(dateElement);
+                    
+                    // Add new comment at the top
+                    const firstComment = commentsContainer.querySelector('.comment-box');
+                    commentsContainer.insertBefore(commentBox, firstComment);
+                    
+                    // Reset form
+                    commentForm.reset();
+                    
+                    // Show success message
+                    const successMessage = document.createElement('div');
+                    successMessage.classList.add('p-3', 'bg-primary', 'bg-opacity-20', 'text-primary', 'text-sm', 'rounded-lg', 'mb-4');
+                    successMessage.textContent = 'Thank you for your wishes!';
+                    
+                    commentForm.parentNode.insertBefore(successMessage, commentForm.nextSibling);
+                    
+                    // Remove success message after 3 seconds
+                    setTimeout(function() {
+                        successMessage.remove();
+                    }, 3000);
+                }
+            });
+        });
+    </script>
+
+    <script id="copyAccountScript">
+        document.addEventListener('DOMContentLoaded', function() {
+            const copyButton = document.getElementById('copyAccount');
+            
+            copyButton.addEventListener('click', function() {
+                const accountNumber = '1234 5678 9012 3456';
+                
+                // Create temporary input element
+                const tempInput = document.createElement('input');
+                tempInput.value = accountNumber.replace(/\s/g, ''); // Remove spaces
+                document.body.appendChild(tempInput);
+                
+                // Select and copy
+                tempInput.select();
+                document.execCommand('copy');
+                
+                // Remove temporary element
+                document.body.removeChild(tempInput);
+                
+                // Change button text temporarily
+                const originalText = copyButton.textContent;
+                copyButton.textContent = 'Copied!';
+                
+                setTimeout(function() {
+                    copyButton.textContent = originalText;
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html>
